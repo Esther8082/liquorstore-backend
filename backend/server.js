@@ -6,7 +6,7 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-const SERVER_PORT = 5000;
+const SERVER_PORT = process.env.PORT || 5000;
 
 // ========================
 // MIDDLEWARE
