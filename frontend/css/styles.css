@@ -1,0 +1,204 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #f4f6f9;
+}
+
+/* TOP BAR */
+.topbar {
+    height: 65px;
+    background: #111827;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Hamburger */
+#menu-btn {
+    font-size: 22px;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* BRAND */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+}
+
+/* SIDEBAR */
+
+
+#sidebar {
+    position: fixed;
+    left: -200px;
+    top: 65px;
+    width: 200px;
+    height: 100%;
+    background: #1f2937;
+    color: white;
+    transition: 0.3s;
+    padding-top: 20px;
+}
+
+#sidebar.active {
+    left: 0;
+}
+
+#sidebar h2 {
+    padding-left: 10px;
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar ul li {
+    padding: 12px 20px;
+}
+
+#sidebar ul li a {
+    color: #d1d5db;
+    text-decoration: none;
+    display: block;
+}
+
+#sidebar ul li:hover {
+    background: #374151;
+}
+
+/* DROPDOWN */
+.dropdown-btn {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.arrow {
+    font-size: 12px;
+}
+
+/* DROPDOWN */
+.submenu {
+    display: none;
+    background: #111827;
+}
+
+.submenu.active {
+    display: block;
+}
+
+/* make dropdown header feel clickable */
+.dropdown-btn {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    padding: 12px 20px;
+}
+/* MAIN */
+.main {
+    margin-left: 20px;
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #111827;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* TABLE */
+.sales-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sales-table th {
+    background: #111827;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.sales-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.sales-table tr:hover {
+    background: #f9fafb;
+}
+
+/* CART ACTIONS */
+.cart-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+    
+}
+
+/* CLEAR CART BUTTON */
+.clear-cart-btn {
+    padding: 10px 16px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.clear-cart-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.checkout-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+.checkout-btn {
+    padding: 10px 16px;
+    background: #10b981; /* green */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.checkout-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Adjustment</title>
+    
+    <link rel="stylesheet" href="../css/stockadjustment.css">
+</head>
+
+<body>
+
+<div class="top-bar">
+
+    <button id="save-all" class="save-btn">
+        💾 Save All Changes
+    </button>
+
+    <h1>Stock Adjustment</h1>
+
+    <button id="closeStockAdjustmentBtn" class="close-btn">
+        Close
+    </button>
+
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Barcode</th>
+            <th>Category</th>
+            <th>Stock</th>
+            <th>Price</th>
+            <th>Image</th>
+            
+        </tr>
+    </thead>
+
+    <tbody id="stock-body"></tbody>
+</table>
+<!-- RIGHT CLICK MENU -->
+<div id="context-menu" class="context-menu">
+
+    <button id="delete-row-option">
+        🗑 Delete Product
+    </button>
+
+    <button id="delete-image-option">
+        🖼 Delete Image
+    </button>
+
+</div>
+<script type="module" src="../js/pages/stockadjustment.js"></script>
+
+</body>
+</html>

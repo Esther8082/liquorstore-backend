@@ -1,0 +1,158 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 15px;
+    color: #1e3a5f;
+}
+
+/* BUTTON */
+#save-all {
+    padding: 10px 15px;
+    background: #1e3a5f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+#save-all:hover {
+    background: #2b4f7a;
+}
+
+/* TABLE WRAPPER */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* HEADER */
+th {
+    background: #1e3a5f;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+}
+
+/* ROWS */
+td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* INPUT FIELDS INSIDE TABLE */
+input {
+    width: 90%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #1e3a5f;
+    box-shadow: 0 0 3px rgba(30,58,95,0.3);
+}
+
+/* ROW HOVER EFFECT (IMPORTANT FOR UX) */
+tr:hover {
+    background: #f0f4ff;
+}
+
+.stock-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+}
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+
+/* TITLE */
+.top-bar h1 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #111;
+}
+
+/* SAVE BUTTON (LEFT SIDE STYLE) */
+.save-btn {
+    padding: 8px 14px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.save-btn:hover {
+    background: #1d4ed8;
+}
+
+/* CLOSE BUTTON (RIGHT SIDE) */
+.close-btn {
+    padding: 8px 14px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.close-btn:hover {
+    background: #dc2626;
+}
+
+/* RIGHT CLICK MENU */
+.context-menu {
+    position: fixed;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+    min-width: 180px;
+}
+
+.context-menu button {
+    border: none;
+    background: none;
+    padding: 10px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.context-menu button:hover {
+    background: #f3f4f6;
+}
+
+/* HIGHLIGHT RIGHT-CLICKED ROW */
+.selected-row {
+    background: rgba(37, 99, 235, 0.08);
+}

@@ -1,0 +1,39 @@
+/* Form Container */
+.form-container {
+    width: 400px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Form Layout */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+    /* Inputs */
+    .form input {
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    /* Buttons */
+    .form button {
+        padding: 14px;
+        background: black;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+        .form button:hover {
+            opacity: 0.9;
+        }

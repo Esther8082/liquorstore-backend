@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html> 
+<html lang="en"> 
+    <head>
+         <meta charset="UTF-8"> 
+         <title>Liquor Store POS</title> 
+         <link rel="stylesheet" href="css/styles.css">
+         </head>
+
+<body> 
+    <!-- TOP BAR -->
+      <header class="topbar">
+         <button id="menu-btn">☰</button>
+          <div class="brand"> 
+          <img src="logoimage/logo.jpeg" alt="logo" class="logo">   <span>Liquor Store POS</span> </div> </header>
+    
+          <!-- SIDEBAR --> 
+     <div id="sidebar">
+         <h2>Menu</h2>
+          <ul> 
+            <li><a href="products.html">Products</a></li>
+             <li><a href="inventory.html">Inventory</a></li> 
+             <li class="dropdown">
+                <div class="dropdown-btn" id="stock-btn">
+                     <span>Stock Management</span> 
+                     <span class="arrow">▼</span> 
+                    </div>
+                     <ul class="submenu" id="stock-menu"> 
+                        <li>
+                            <a href="stockmanagement/addproduct.html">Add Product</a></li>
+                             <li><a
+        href="stockmanagement/stockadjustments.html">Stock Adjustments</a></li>
+         <li><a href="stockmanagement/lowinstock.html">Low In Stock</a></li> 
+        </ul> </li> <li><a href="reports.html">Reports</a></li> </ul> 
+    </div>
+        <!-- MAIN CONTENT -->
+          <main class="main"> 
+
+            <h1 class="page-title">Sales Overview</h1> 
+            
+            <div class="cart-actions">
+        <button id="clear-cart-btn" class="clear-cart-btn">
+            🗑 Clear Cart
+        </button>
+
+
+    </div>
+           
+            <div class="card"> 
+                <table class="sales-table"> 
+                    <thead>
+                         <tr> 
+                            <th>Item</th>
+                         <th>Price</th> 
+                         <th>Quantity</th> 
+                         <th>Total Amount</th>
+          </tr> 
+        </thead>
+           <tbody id="sales-table-body"> 
+            
+            <!-- JS renders here -->
+             </tbody> 
+        </table> 
+    </div> 
+
+    <!-- ✅ CHECKOUT BUTTON BELOW TABLE -->
+<div class="checkout-wrapper">
+    <button id="checkout-btn" class="checkout-btn">
+        💳 Checkout
+    </button>
+</div>
+
+</main>
+
+<script src="js/app.js"></script>
+    
+    </body>  
+          </html>

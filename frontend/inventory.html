@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inventory</title>
+
+<link rel="stylesheet" href="./css/inventory.css">
+
+</head>
+
+<body>
+
+<div class="inventory-container">
+
+    <!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <h2>Inventory</h2>
+
+    <ul class="sidebar-menu">
+
+        <li>
+            <button id="filter-all" class="sidebar-btn">All Products</button>
+        </li>
+
+        <li>
+            <button id="filter-quarts" class="sidebar-btn">Quarts</button>
+        </li>
+
+        <li>
+            <button id="filter-dumpies" class="sidebar-btn">Dumpies</button>
+        </li>
+
+        <li>
+            <button id="filter-champagnes" class="sidebar-btn">Champagnes</button>
+        </li>
+
+    </ul>
+
+</aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+        <!-- SEARCH -->
+       <div class="top-bar">
+
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+
+        <input 
+            type="text" 
+            id="inventory-search" 
+            placeholder="Search product, barcode or category..."
+        >
+    </div>
+
+    <button id="closeInventoryBtn" class="close-btn">
+        Close
+    </button>
+
+</div>
+
+        
+
+<!-- CARDS CONTAINER -->
+<div id="inventory-grid" class="inventory-grid"></div>
+
+    </main>
+
+</div>
+
+<script src="./js/pages/inventory.js"></script>
+
+</body>
+
+</html>
