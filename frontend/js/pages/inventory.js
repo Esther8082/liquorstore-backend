@@ -1,3 +1,4 @@
+const API_BASE_URL = "https://liquorstore-api.onrender.com";
 let allProducts = [];
 
 // =========================
@@ -7,8 +8,7 @@ async function loadInventory() {
 
     try {
 
-        const res = await fetch("http://localhost:5000/products");
-        allProducts = await res.json();
+        const res = await fetch(`${API_BASE_URL}/products`); allProducts = await res.json();
 
         renderCards(allProducts);
 
@@ -49,10 +49,10 @@ function renderCards(products) {
         const card = document.createElement("div");
         card.classList.add("product-card");
 
-        const imageUrl = product.image_url
-            ? `http://localhost:5000${product.image_url}`
-            : "https://via.placeholder.com/150";
-
+       const imageUrl = product.image_url
+    ? `${API_BASE_URL}${product.image_url}`
+    : "https://via.placeholder.com/150";
+    
         const stockClass =
             product.quantity_in_stock > 0
                 ? "in-stock"

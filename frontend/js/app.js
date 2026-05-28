@@ -1,3 +1,15 @@
+const API_BASE_URL = "https://liquorstore-api.onrender.com";
+
+async function getProducts() {
+    const res = await fetch(`${API_BASE_URL}/products`);
+    return res.json();
+}
+
+async function getCategories() {
+    const res = await fetch(`${API_BASE_URL}/categories`);
+    return res.json();
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     // =========================

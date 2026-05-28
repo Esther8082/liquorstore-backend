@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config/api.js";
+
 console.log("LOADED PRODUCTS.JS FILE");
 
 import { fetchProducts } from "../api/products.api.js";
@@ -63,8 +65,7 @@ async function loadProducts() {
 // =========================
 async function loadCategories() {
     try {
-        const res = await fetch("http://localhost:5000/categories");
-        categories = await res.json();
+       const res = await fetch(`${API_BASE_URL}/categories`);        categories = await res.json();
         renderCategories();
     } catch (error) {
         console.error("Failed to load categories:", error);
