@@ -17,6 +17,7 @@ const cartBody = document.getElementById("cart-body");
 
 const checkoutBtn = document.getElementById("checkout-btn");
 const backBtn = document.getElementById("backBtn");
+const clearCartBtn = document.getElementById("clear-cart-btn");
 
 // =========================
 // STATE (PRODUCT PAGE CART)
@@ -213,22 +214,29 @@ function renderCart() {
 
     cartBody.innerHTML = "";
 
-    cart.forEach((item, index) => {
+    cart.forEach((item) => {
+
         const row = document.createElement("tr");
 
         row.innerHTML = `
             <td>${item.item_name}</td>
             <td>
-                <input type="number" min="1" value="${item.quantity}" class="qty-input"/>
+                <input 
+                    type="number" 
+                    min="1" 
+                    value="${item.quantity}" 
+                    class="qty-input"
+                    data-barcode="${item.barcode}"
+                />
             </td>
-            <td>R ${item.total}</td>
+            <td class="total-cell">R ${item.total}</td>
         `;
 
         row.addEventListener("contextmenu", (e) => {
             e.preventDefault();
 
             if (confirm(`Remove "${item.item_name}"?`)) {
-                cart.splice(index, 1);
+                cart = cart.filter(c => c.barcode !== item.barcode);
                 saveCart();
                 renderCart();
             }
@@ -244,22 +252,51 @@ function renderCart() {
 // QUANTITY UPDATE
 // =========================
 function attachQtyListeners() {
-    document.querySelectorAll(".qty-input").forEach((input, index) => {
+
+    document.querySelectorAll(".qty-input").forEach((input) => {
+
         input.addEventListener("input", (e) => {
+
+            const barcode = e.target.dataset.barcode;
             let value = parseInt(e.target.value);
+
             if (isNaN(value) || value < 1) value = 1;
 
-            cart[index].quantity = value;
-            cart[index].total = cart[index].price * value;
+            const item = cart.find(c => c.barcode == barcode);
+
+            if (!item) return;
+
+            item.quantity = value;
+            item.total = item.price * value;
 
             saveCart();
-            renderCart();
+
+            // update ONLY the total cell (no full rerender lag)
+            e.target.closest("tr")
+                .querySelector(".total-cell")
+                .textContent = `R ${item.total}`;
         });
     });
 }
 
 // =========================
-// CHECKOUT (IMPORTANT FIX)
+// CLEAR CART BUTTON
+// =========================
+clearCartBtn.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    if (cart.length === 0) return;
+
+    if (confirm("Clear all items from cart?")) {
+        cart = [];
+        saveCart();
+        renderCart();
+    }
+});
+
+// =========================
+// CHECKOUT 
 // =========================
 checkoutBtn.addEventListener("click", () => {
 
@@ -294,7 +331,7 @@ checkoutBtn.addEventListener("click", () => {
     localStorage.removeItem("cart");
     renderCart();
 
-    window.location.href = "index.html";
+window.location.replace("index.html");
 });
 
 // =========================
@@ -302,7 +339,7 @@ checkoutBtn.addEventListener("click", () => {
 // =========================
 if (backBtn) {
     backBtn.addEventListener("click", () => {
-        window.location.href = "index.html";
+        window.location.replace("index.html");
     });
 }
 
@@ -315,14 +352,17 @@ let offsetY = 0;
 
 if (cartBox && cartHeader) {
     cartHeader.addEventListener("mousedown", (e) => {
-        isDragging = true;
 
-        offsetX = e.clientX - cartBox.offsetLeft;
-        offsetY = e.clientY - cartBox.offsetTop;
+    if (e.target.closest("#clear-cart-btn")) return;
 
-        cartBox.style.right = "auto";
-        cartBox.style.bottom = "auto";
-    });
+    isDragging = true;
+
+    offsetX = e.clientX - cartBox.offsetLeft;
+    offsetY = e.clientY - cartBox.offsetTop;
+
+    cartBox.style.right = "auto";
+    cartBox.style.bottom = "auto";
+});
 
     document.addEventListener("mousemove", (e) => {
         if (!isDragging) return;

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Category Management</title>
+
+   <link rel="stylesheet" href="../css/categories.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>Category Management</h1>
+
+        <button id="back-btn">
+            Back
+        </button>
+
+    </div>
+
+    <!-- ADD CATEGORY -->
+
+    <div class="card">
+
+        <h2>Add New Category</h2>
+
+        <div class="add-category">
+
+            <input
+                type="text"
+                id="category-name"
+                placeholder="Enter category name">
+
+            <button id="add-category-btn">
+                Add Category
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- EXISTING CATEGORIES -->
+
+    <div class="card">
+
+        <h2>Existing Categories</h2>
+
+        <input
+            type="text"
+            id="search-category"
+            placeholder="Search categories...">
+
+        <table>
+
+            <thead>
+
+               <tr>
+    <th>ID</th>
+    <th>Category Name</th>
+    <th>Products</th>
+</tr>
+
+            </thead>
+
+            <tbody id="category-table-body">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<hr class="section-divider">
+
+<div id="products-section" class="products-section">
+
+    <h2 id="products-title">
+        Products
+    </h2>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Barcode</th>
+                    <th>Product</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="products-table-body">
+
+                <tr>
+
+                    <td colspan="5">
+                        Select a category above to view its products.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<hr class="section-divider">
+
+<div id="category-details" class="details-card">
+
+    <h2>Category Details</h2>
+
+    <label>Category Name</label>
+
+    <input
+        type="text"
+        id="edit-category-name"
+        disabled>
+
+    <p>
+
+        Products in Category:
+        <strong id="product-count">0</strong>
+
+    </p>
+
+    <button id="rename-category-btn">
+        Rename Category
+    </button>
+
+    <div class="danger-zone">
+
+        <h3>Danger Zone</h3>
+
+        <p>
+            Deleting a category permanently removes it.
+        </p>
+
+        <button id="delete-category-btn">
+            Delete Category
+        </button>
+
+    </div>
+
+</div>
+
+<script type="module" src="../js/pages/categories.js"></script>
+</body>
+
+</html>

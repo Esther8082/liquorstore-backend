@@ -121,6 +121,20 @@ th {
     font-size: 12px;
 }
 
+.clear-cart-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.clear-cart-btn:hover {
+    background: #c0392b;
+}
+
 /* CHECKOUT BUTTON */
 #checkout-btn {
     width: 100%;

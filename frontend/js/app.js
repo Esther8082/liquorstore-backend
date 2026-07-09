@@ -28,30 +28,45 @@ document.addEventListener("DOMContentLoaded", () => {
     // =========================
     function renderSalesTable() {
 
-        if (!salesTableBody) return;
+    if (!salesTableBody) return;
 
-        salesTableBody.innerHTML = "";
+    const salesTotal = document.getElementById("sales-total");
 
-        if (sales.length === 0) {
-            salesTableBody.innerHTML =
-                `<tr><td colspan="4">No sales found</td></tr>`;
-            return;
+    salesTableBody.innerHTML = "";
+
+    let grandTotal = 0;
+
+    if (sales.length === 0) {
+        salesTableBody.innerHTML =
+            `<tr><td colspan="4">No sales found</td></tr>`;
+
+        if (salesTotal) {
+            salesTotal.textContent = "R 0.00";
         }
 
-        sales.forEach(item => {
-
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>${item.item_name}</td>
-                <td>R ${item.price}</td>
-                <td>${item.quantity}</td>
-                <td>R ${item.total}</td>
-            `;
-
-            salesTableBody.appendChild(row);
-        });
+        return;
     }
+
+    sales.forEach(item => {
+
+        grandTotal += Number(item.total);
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.item_name}</td>
+            <td>R ${Number(item.price).toFixed(2)}</td>
+            <td>${item.quantity}</td>
+            <td>R ${Number(item.total).toFixed(2)}</td>
+        `;
+
+        salesTableBody.appendChild(row);
+    });
+
+    if (salesTotal) {
+        salesTotal.textContent = `R ${grandTotal.toFixed(2)}`;
+    }
+}
 
     renderSalesTable();
 

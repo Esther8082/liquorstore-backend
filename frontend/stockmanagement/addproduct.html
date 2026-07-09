@@ -21,6 +21,33 @@
         </button>
     </div>
 
+    <h3>Choose Category</h3>
+
+<div id="category-grid" class="category-grid">
+
+    <!-- Categories loaded by JavaScript -->
+
+</div>
+
+<button
+    type="button"
+    id="new-category-btn"
+    class="new-category-btn">
+
+    + Add New Category
+
+</button>
+
+<div class="selected-category">
+
+    Selected Category:
+
+    <span id="selected-category">
+        None
+    </span>
+
+</div>
+
     <form id="add-product-form" class="form">
 
             <input type="text"
@@ -37,11 +64,6 @@
                    id="barcode"
                    placeholder="Barcode">
 
-           <select id="category" required>
-    <option value="">
-        Select Category
-    </option>
-</select>
 
             <input type="number"
                    id="quantity-in-stock"
@@ -63,6 +85,45 @@
         </form>
 
     </div>
+
+    <!-- =========================
+     ADD CATEGORY MODAL
+========================= -->
+
+<div id="category-modal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Add New Category</h2>
+
+        <input
+            type="text"
+            id="new-category-name"
+            placeholder="Category name">
+
+        <div class="modal-buttons">
+
+            <button
+                type="button"
+                id="cancel-category-btn">
+
+                Cancel
+
+            </button>
+
+            <button
+                type="button"
+                id="save-category-btn">
+
+                Save
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
     <script type="module" src="../js/pages/addproduct.js"></script>
 

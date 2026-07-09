@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/checkout.css">
+</head>
+
+<main class="checkout-container">
+    <div class="checkout-grid">
+
+        <!-- LEFT -->
+        <div class="payment-panel">
+
+            <div class="total-section">
+                <p>Total Amount</p>
+                <h2 id="total-amount">R 0.00</h2>
+            </div>
+
+            <hr>
+
+           <div class="payment-section">
+
+    <h3>Payment Method</h3>
+
+    <div class="payment-options">
+
+        <label>
+            <input type="radio"
+                   name="payment"
+                   value="cash"
+                   checked>
+            Cash
+        </label>
+
+        <label>
+            <input type="radio"
+                   name="payment"
+                   value="card">
+            Card
+        </label>
+
+        <label>
+            <input type="radio"
+                   name="payment"
+                   value="split">
+            Split Payment
+        </label>
+
+    </div>
+
+</div>
+
+<hr>
+
+<!-- CASH -->
+<div id="cash-section">
+
+    <label for="amount-received">Amount Received</label>
+
+   <input
+    id="amount-received"
+    type="text"
+    inputmode="decimal"
+    placeholder="Enter amount received">
+</div>
+
+<!-- CARD -->
+<div id="card-section" style="display:none;">
+
+    <p class="card-message">
+        Customer is paying the full amount by card.
+    </p>
+
+</div>
+
+<!-- SPLIT -->
+<div id="split-section" style="display:none;">
+
+    <div class="payment-input">
+        <label for="cash-amount">Cash Amount</label>
+
+        <input
+            id="cash-amount"
+            type="text"
+            inputmode="decimal"
+            placeholder="Enter cash amount">
+    </div>
+
+    <div class="payment-input">
+        <label for="card-amount">Card Amount</label>
+
+        <input
+            id="card-amount"
+            type="text"
+            inputmode="decimal"
+            placeholder="Enter card amount">
+    </div>
+
+</div>
+
+<hr>
+
+<div class="change-section">
+
+    <p>Change</p>
+
+    <h2 id="change">R 0.00</h2>
+
+</div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="summary-panel">
+
+            <h3>Order Summary</h3>
+
+            <div id="summary-list">
+
+                <!-- JS renders items -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <button
+        id="print-btn"
+        class="print-btn">
+
+        🖨 Print Slip
+
+    </button>
+
+</main>
+
+<script src="js/pages/checkout.js"></script>

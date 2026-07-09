@@ -114,16 +114,7 @@ body {
     padding: 12px 20px;
 }
 /* MAIN */
-.main {
-    margin-left: 20px;
-    padding: 20px;
-}
 
-.page-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #111827;
-}
 
 /* CARD */
 .card {
@@ -155,30 +146,29 @@ body {
     background: #f9fafb;
 }
 
-/* CART ACTIONS */
-.cart-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 15px;
-    
-}
+
 
 /* CLEAR CART BUTTON */
 .clear-cart-btn {
-    padding: 10px 16px;
     background: #ef4444;
-    color: white;
+    color: #fff;
     border: none;
-    border-radius: 10px;
-    cursor: pointer;
+    padding: 11px 18px;
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
-    transition: 0.2s;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(239, 68, 68, 0.25);
+    transition: all 0.2s ease;
 }
 
 .clear-cart-btn:hover {
     background: #dc2626;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+}
+
+.clear-cart-btn:active {
+    transform: translateY(0);
 }
 
 .checkout-wrapper {
@@ -201,4 +191,43 @@ body {
 .checkout-btn:hover {
     background: #059669;
     transform: translateY(-1px);
+}
+
+/* HEADER ABOVE SALES TABLE */
+.sales-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+/* TOTAL SALE DISPLAY */
+.sales-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 10px 18px;
+
+    background: #f8fafc;
+    border: 1px solid #dbe3ea;
+    border-radius: 8px;
+
+    pointer-events: none; /* reinforces that it isn't interactive */
+}
+
+.sales-label {
+    font-size: 13px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.sales-total {
+    font-size: 28px;
+    font-weight: 700;
+    color: #059669;
+    font-variant-numeric: tabular-nums;
 }
