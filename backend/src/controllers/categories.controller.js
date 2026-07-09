@@ -60,7 +60,68 @@ const fetchCategoryProducts = async (req, res) => {
 
 };
 
+// =========================
+// CREATE CATEGORY
+// =========================
+const createCategory = async (req, res) => {
+
+    try {
+
+        const { category_name } = req.body;
+
+        if (!category_name || category_name.trim() === "") {
+
+            return res.status(400).json({
+                error: "Category name is required."
+            });
+
+        }
+
+        // Check if category already exists
+        const existing = await databasePool.query(
+
+            `SELECT *
+             FROM categories
+             WHERE LOWER(category_name)=LOWER($1)`,
+
+            [category_name]
+
+        );
+
+        if (existing.rows.length > 0) {
+
+            return res.status(409).json({
+                error: "Category already exists."
+            });
+
+        }
+
+        const result = await databasePool.query(
+
+            `INSERT INTO categories(category_name)
+             VALUES($1)
+             RETURNING *`,
+
+            [category_name]
+
+        );
+
+        res.status(201).json(result.rows[0]);
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+
+};
+
 module.exports = {
     fetchCategories,
-    fetchCategoryProducts
+    fetchCategoryProducts,
+    createCategory
 };
