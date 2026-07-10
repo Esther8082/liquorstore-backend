@@ -155,7 +155,8 @@ function renderProducts(data) {
 
     data.forEach(p => {
         const row = document.createElement("tr");
-        row.dataset.barcode = p.barcode;
+        row.dataset.productId = p.product_id;
+    row.dataset.barcode = p.barcode;
 
         row.innerHTML = `
             <td>${p.barcode}</td>
@@ -193,13 +194,16 @@ tbody.addEventListener("click", (e) => {
         existing.quantity++;
         existing.total = existing.quantity * existing.price;
     } else {
-        cart.push({
-            barcode: product.barcode,
-            item_name: product.item_name,
-            price: product.price,
-            quantity: 1,
-            total: product.price
-        });
+        
+       cart.push({
+    product_id: product.product_id,
+    barcode: product.barcode,
+    item_name: product.item_name,
+    price: Number(product.price),
+    quantity: 1,
+    total: Number(product.price)
+});
+
     }
 
     saveCart();

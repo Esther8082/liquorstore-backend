@@ -14,3 +14,11 @@ if (checkoutBtn) {
         window.location.href = "checkout.html";
     });
 }
+
+document
+.getElementById("products-btn")
+.addEventListener("click", () => {
+
+    window.location.href = "products.html";
+
+});

@@ -15,7 +15,10 @@ const categoryGrid =
 const selectedCategory =
     document.getElementById("selected-category");
 
-    const categoryModal =
+const productFormSection =
+    document.getElementById("product-form-section");
+    
+const categoryModal =
     document.getElementById("category-modal");
 
 const newCategoryBtn =
@@ -65,21 +68,32 @@ async function loadCategories() {
 
             card.addEventListener("click", () => {
 
-                document
-                    .querySelectorAll(".category-card")
-                    .forEach(c => c.classList.remove("selected"));
+    document
+        .querySelectorAll(".category-card")
+        .forEach(c => c.classList.remove("selected"));
 
-                card.classList.add("selected");
+    card.classList.add("selected");
 
-                selectedCategoryId =
-                    category.category_id;
+    selectedCategoryId =
+        category.category_id;
 
-                selectedCategory.textContent =
-                    category.category_name;
+    selectedCategory.textContent =
+        category.category_name;
 
-            });
+    // Show the product form
+    productFormSection.classList.add("show");
 
-            categoryGrid.appendChild(card);
+    // Scroll to the form
+    productFormSection.scrollIntoView({
+
+        behavior: "smooth",
+        block: "start"
+
+    });
+
+});
+
+      categoryGrid.appendChild(card);
 
         });
 
@@ -141,8 +155,26 @@ formData.append("quantity_in_stock", document.getElementById("quantity-in-stock"
             throw new Error(data.error || "Failed to save product");
         }
 
-        alert("Product saved successfully");
-        addProductForm.reset();
+alert("Product saved successfully");
+
+addProductForm.reset();
+
+selectedCategory.textContent = "None";
+
+selectedCategoryId = null;
+
+productFormSection.classList.remove("show");
+
+document
+    .querySelectorAll(".category-card")
+    .forEach(card => card.classList.remove("selected"));
+
+window.scrollTo({
+
+    top: 0,
+    behavior: "smooth"
+
+});
 
     } catch (error) {
         console.error("SAVE PRODUCT ERROR:", error.message);

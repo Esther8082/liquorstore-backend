@@ -67,10 +67,15 @@
 ========================= */
 
 .category-grid{
+
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(120px,1fr));
-    gap:12px;
-    margin:20px 0;
+
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+
+    gap:18px;
+
+    margin:25px 0;
+
 }
 
 /* =========================
@@ -78,38 +83,82 @@
 ========================= */
 
 .category-card{
-    padding:15px;
-    background:#f3f4f6;
-    border:2px solid transparent;
-    border-radius:10px;
+
+    background:#ffffff;
+
+    border:2px solid #e5e7eb;
+
+    border-radius:14px;
+
+    padding:22px;
+
     text-align:center;
-    cursor:pointer;
+
+    font-size:18px;
+
     font-weight:600;
-    transition:.2s;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    box-shadow:0 4px 12px rgba(0,0,0,.06);
+
 }
 
 .category-card:hover{
-    background:#e5e7eb;
+
+    transform:translateY(-4px);
+
+    border-color:#10b981;
+
+    box-shadow:0 10px 25px rgba(16,185,129,.18);
+
 }
 
 .category-card.selected{
-    background:#10b981;
-    color:#ffffff;
-    border-color:#059669;
-}
 
+    background:#10b981;
+
+    color:white;
+
+    border-color:#10b981;
+
+    box-shadow:0 12px 25px rgba(16,185,129,.30);
+
+}
 /* =========================
    SELECTED CATEGORY
 ========================= */
 
 .selected-category{
-    margin:15px 0 20px;
-    font-weight:600;
+
+    margin:25px 0;
+
+    padding:18px 22px;
+
+    background:#ecfdf5;
+
+    border-left:6px solid #10b981;
+
+    border-radius:12px;
+
+    font-size:18px;
+
+    font-weight:500;
+
 }
 
-.selected-category span{
-    color:#10b981;
+#selected-category{
+
+    font-weight:700;
+
+    color:#047857;
+
+    margin-left:8px;
+
 }
+
 
 /* =========================
    NEW CATEGORY BUTTON
@@ -199,4 +248,13 @@
 
 #save-category-btn:hover{
     background:#059669;
+}
+
+.product-form-section{
+    display:none;
+    margin-top:25px;
+}
+
+.product-form-section.show{
+    display:block;
 }

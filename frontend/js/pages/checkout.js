@@ -1,3 +1,5 @@
+import { createSale } from "../api/sales.api.js";
+
 // =========================
 // DOM ELEMENTS
 // =========================
@@ -154,8 +156,92 @@ document
 // =========================
 // PRINT
 // =========================
-printBtn.addEventListener("click", () => {
+printBtn.addEventListener("click", async () => {
 
-    alert("Printing receipt...");
+    try {
+
+       const paymentMethod =
+document.querySelector('input[name="payment"]:checked')?.value;
+
+if(!paymentMethod){
+
+    alert("Select a payment method.");
+
+    return;
+
+}
+
+let amountPaid = 0;
+
+if(paymentMethod === "cash"){
+
+    amountPaid =
+        Number(receivedInput.value);
+
+}
+else if(paymentMethod === "card"){
+
+    amountPaid =
+        grandTotal;
+
+}
+else{
+
+    amountPaid =
+        Number(cashAmountInput.value) +
+        Number(cardAmountInput.value);
+
+}
+
+const changeGiven =
+    Math.max(0, amountPaid - grandTotal);
+
+const sale = {
+
+    customer_id: 1,
+
+    payment_method: paymentMethod,
+
+    subtotal: grandTotal,
+
+    total: grandTotal,
+
+    amount_paid: amountPaid,
+
+    change_given: changeGiven,
+
+    items: cart.map(item => ({
+
+        product_id: item.product_id,
+
+        quantity: item.quantity,
+
+        selling_price: item.price,
+
+        line_total: item.total
+
+  }))
+
+        };
+
+        const response = await createSale(sale);
+
+        console.log(response);
+
+        alert("Sale saved successfully.");
+
+        localStorage.removeItem("checkoutCart");
+
+        window.location.href = "index.html";
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
 
 });
