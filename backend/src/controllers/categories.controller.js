@@ -1,10 +1,24 @@
 const databasePool = require("../config/database");
 
 const fetchCategories = async (req, res) => {
+
     try {
 
         const result = await databasePool.query(
-            "SELECT * FROM categories ORDER BY category_id ASC"
+
+            `SELECT
+                c.category_id,
+                c.category_name,
+                COUNT(p.product_id) AS product_count
+             FROM categories c
+             LEFT JOIN products p
+                ON c.category_id = p.category_id
+             GROUP BY
+                c.category_id,
+                c.category_name
+             ORDER BY
+                c.category_id ASC`
+
         );
 
         res.status(200).json(result.rows);
@@ -16,7 +30,9 @@ const fetchCategories = async (req, res) => {
         res.status(500).json({
             error: error.message
         });
+
     }
+
 };
 
 
