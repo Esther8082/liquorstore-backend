@@ -1,5 +1,8 @@
 const databasePool = require("../config/database");
 
+// =========================
+// GENERATE RECEIPT NUMBER
+// =========================
 async function generateReceiptNumber() {
 
     const result = await databasePool.query(`
@@ -32,85 +35,92 @@ const createSale = async (req, res) => {
 
         await client.query("BEGIN");
 
-const {
-    customer_id,
-    payment_method,
-    subtotal,
-    total,
-    amount_paid,
-    change_given,
-    items
-} = req.body;
+        const {
+            customer_id,
+            payment_method,
+            subtotal,
+            total,
+            amount_paid,
+            change_given,
+            items
+        } = req.body;
 
-const receiptNumber =
-    await generateReceiptNumber();
+        const receiptNumber =
+            await generateReceiptNumber();
+
+        // =========================
+        // SAVE SALE
+        // =========================
+        const saleResult = await client.query(
+
+            `
+            INSERT INTO sales
+            (
+                receipt_number,
+                customer_id,
+                payment_method,
+                subtotal,
+                total,
+                amount_paid,
+                change_given,
+                sale_status
+            )
+            VALUES
+            (
+                $1,$2,$3,$4,$5,$6,$7,$8
+            )
+            RETURNING sale_id
+            `,
+
+            [
+                receiptNumber,
+                customer_id,
+                payment_method,
+                subtotal,
+                total,
+                amount_paid,
+                change_given,
+                "Completed"
+            ]
+
+        );
+
+        const saleId =
+            saleResult.rows[0].sale_id;
 
         await client.query("COMMIT");
 
-       res.status(201).json({
+        res.status(201).json({
 
-    message: "Sale completed.",
+            message: "Sale completed.",
 
-    sale_id: saleId,
+            sale_id: saleId,
 
-    receipt_number: receiptNumber
+            receipt_number: receiptNumber
 
-});
+        });
 
-    } catch (error) {
+    }
+    catch (error) {
 
         await client.query("ROLLBACK");
 
         console.error(error);
 
         res.status(500).json({
+
             error: error.message
+
         });
 
-    } finally {
+    }
+    finally {
 
         client.release();
 
     }
 
 };
-
-const saleResult =
-await client.query(
-
-`
-INSERT INTO sales
-(
-    receipt_number,
-    customer_id,
-    payment_method,
-    subtotal,
-    total,
-    amount_paid,
-    change_given,
-    sale_status
-)
-VALUES
-(
-    $1,$2,$3,$4,$5,$6,$7,$8
-)
-RETURNING sale_id
-`,
-[
-    receiptNumber,
-    customer_id,
-    payment_method,
-    subtotal,
-    total,
-    amount_paid,
-    change_given,
-    "Completed"
-]
-
-);
-
-const saleId =
-    saleResult.rows[0].sale_id;
 
 module.exports = {
     createSale

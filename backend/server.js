@@ -28,7 +28,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // ========================
 const productsRouter = require("./src/routes/products.routes");
 const categoriesRoutes = require("./src/routes/categories.routes");
-const salesRoutes = require("./routes/sales.routes");
+const salesRoutes = require("./src/routes/sales.route");
 
 app.get("/", (req, res) => {
     res.send("LIQUOR STORE POS Backend Running");
