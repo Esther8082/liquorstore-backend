@@ -120,8 +120,110 @@ const createCategory = async (req, res) => {
 
 };
 
+// =========================
+// UPDATE CATEGORY
+// =========================
+const updateCategory = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { category_name } = req.body;
+
+        const result = await databasePool.query(
+
+            `UPDATE categories
+             SET category_name = $1
+             WHERE category_id = $2
+             RETURNING *`,
+
+            [category_name, id]
+
+        );
+
+        if (result.rows.length === 0) {
+
+            return res.status(404).json({
+                error: "Category not found."
+            });
+
+        }
+
+        res.json(result.rows[0]);
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+
+};
+
+// =========================
+// DELETE CATEGORY
+// =========================
+const deleteCategory = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const products = await databasePool.query(
+
+            `SELECT *
+             FROM products
+             WHERE category_id = $1`,
+
+            [id]
+
+        );
+
+        if (products.rows.length > 0) {
+
+            return res.status(400).json({
+                error: "Cannot delete a category that still contains products."
+            });
+
+        }
+
+        const result = await databasePool.query(
+
+            `DELETE FROM categories
+             WHERE category_id = $1
+             RETURNING *`,
+
+            [id]
+
+        );
+
+        if (result.rows.length === 0) {
+
+            return res.status(404).json({
+                error: "Category not found."
+            });
+
+        }
+
+        res.json({
+            message: "Category deleted."
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+
+};
+
 module.exports = {
     fetchCategories,
     fetchCategoryProducts,
-    createCategory
+    createCategory,
+     updateCategory,
+    deleteCategory
 };
