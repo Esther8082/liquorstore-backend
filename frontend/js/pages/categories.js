@@ -20,7 +20,10 @@ const productsBody =
 const productsTitle =
     document.getElementById("products-title");
 
-const categoryInput =
+    const searchCategory =
+    document.getElementById("search-category");
+
+    const categoryInput =
     document.getElementById("category-name");
 
 const addCategoryBtn =
@@ -60,7 +63,7 @@ let selectedCategoryId = null;
 
     <td>${category.category_name}</td>
 
-    <td>-</td>
+    <td>${category.product_count}</td>
 
 </tr>
 
@@ -98,7 +101,7 @@ function addRowEvents() {
 
 async function loadProducts(categoryId, categoryName) {
 
-    let selectedCategoryId = null;
+    selectedCategoryId = categoryId;
 
     productsTitle.textContent =
         `${categoryName} Products`;
@@ -229,6 +232,34 @@ addCategoryBtn.addEventListener("click", async () => {
 
 });
 
+function filterCategories() {
+
+    const searchText =
+        searchCategory.value.toLowerCase();
+
+    const rows =
+        document.querySelectorAll(".category-row");
+
+    rows.forEach(row => {
+
+        const categoryName =
+            row.dataset.name.toLowerCase();
+
+        if (categoryName.includes(searchText)) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+}
+searchCategory.addEventListener("input", filterCategories);
+
 document
 .getElementById("rename-category-btn")
 .addEventListener("click", async () => {
@@ -328,3 +359,4 @@ document
     loadCategories();
 
 });
+
