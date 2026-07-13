@@ -29,6 +29,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const productsRouter = require("./src/routes/products.routes");
 const categoriesRoutes = require("./src/routes/categories.routes");
 const salesRoutes = require("./src/routes/sales.route");
+const customersRoutes =require("./src/routes/customers.routes");
 
 app.get("/", (req, res) => {
     res.send("LIQUOR STORE POS Backend Running");
@@ -37,6 +38,7 @@ app.get("/", (req, res) => {
 app.use("/products", productsRouter);
 app.use("/categories", categoriesRoutes);
 app.use("/sales", salesRoutes);
+app.use("/customers", customersRoutes);
 
 // ========================
 // ERROR HANDLER (ADD HERE)
