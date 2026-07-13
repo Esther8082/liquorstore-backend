@@ -1,0 +1,355 @@
+/* =========================
+   PAGE
+========================= */
+
+body{
+    margin:0;
+    padding:30px;
+    font-family:"Segoe UI",sans-serif;
+    background:#f4f6f9;
+    color:#1f2937;
+}
+
+.page{
+
+    max-width:1200px;
+
+    margin:auto;
+
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.page-header h1{
+
+    margin:0;
+
+    font-size:32px;
+
+    font-weight:700;
+
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary-btn{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 22px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.primary-btn:hover{
+
+    background:#1d4ed8;
+
+    transform:translateY(-1px);
+
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-section{
+
+    margin-bottom:20px;
+
+}
+
+.search-section input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:.2s;
+
+    box-sizing:border-box;
+
+}
+
+.search-section input:focus{
+
+    border-color:#2563eb;
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.customers-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:#fff;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.customers-table thead{
+
+    background:#111827;
+
+    color:white;
+
+}
+
+.customers-table th{
+
+    padding:16px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.customers-table td{
+
+    padding:16px;
+
+    border-bottom:1px solid #edf2f7;
+
+}
+
+.customers-table tbody tr{
+
+    transition:.2s;
+
+}
+
+.customers-table tbody tr:hover{
+
+    background:#f8fafc;
+
+}
+
+/* =========================
+   ACTION BUTTONS
+========================= */
+
+.customers-table button{
+
+    border:none;
+
+    padding:8px 14px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    margin-right:8px;
+
+    transition:.2s;
+
+}
+
+.customers-table button:first-child{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+.customers-table button:first-child:hover{
+
+    background:#1d4ed8;
+
+}
+
+.customers-table button:last-child{
+
+    background:#ef4444;
+
+    color:white;
+
+}
+
+.customers-table button:last-child:hover{
+
+    background:#dc2626;
+
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.45);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999;
+
+}
+
+.modal.show{
+
+    display:flex;
+
+}
+
+.modal-content{
+
+    background:white;
+
+    width:420px;
+
+    padding:30px;
+
+    border-radius:14px;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+
+}
+
+.modal-content h2{
+
+    margin-top:0;
+
+    margin-bottom:20px;
+
+}
+
+.modal-content input,
+
+.modal-content select{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:16px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:8px;
+
+    font-size:14px;
+
+    box-sizing:border-box;
+
+}
+
+.modal-content input:focus,
+
+.modal-content select:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+}
+
+/* =========================
+   MODAL BUTTONS
+========================= */
+
+.modal-buttons{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+}
+
+.modal-buttons button{
+
+    border:none;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+#cancel-customer-btn{
+
+    background:#e5e7eb;
+
+}
+
+#save-customer-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+#save-customer-btn:hover{
+
+    background:#1d4ed8;
+
+}

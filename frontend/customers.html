@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Customers</title>
+
+    <link rel="stylesheet" href="css/customers.css">
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="page-header">
+
+        <h1>Customers</h1>
+
+        <button
+            id="add-customer-btn"
+            class="primary-btn">
+
+            + Add Customer
+
+        </button>
+
+    </div>
+
+    <div class="search-section">
+
+        <input
+            type="text"
+            id="customer-search"
+            placeholder="Search by customer name or phone...">
+
+    </div>
+
+    <table class="customers-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Type</th>
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="customers-body">
+
+            <!-- Loaded from JavaScript -->
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<!-- =========================
+ADD CUSTOMER MODAL
+========================= -->
+
+<div
+    id="customer-modal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <h2>Add Customer</h2>
+
+        <input
+            id="customer-name"
+            type="text"
+            placeholder="Customer Name">
+
+        <input
+            id="customer-phone"
+            type="text"
+            placeholder="Phone Number">
+
+        <input
+            id="customer-email"
+            type="email"
+            placeholder="Email (Optional)">
+
+        <select id="customer-type">
+
+            <option value="Cash">
+                Cash Customer
+            </option>
+
+            <option value="Account">
+                Account Customer
+            </option>
+
+        </select>
+
+        <div class="modal-buttons">
+
+            <button
+                id="cancel-customer-btn"
+                type="button">
+
+                Cancel
+
+            </button>
+
+            <button
+                id="save-customer-btn"
+                type="button">
+
+                Save Customer
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module" src="js/pages/customers.js"></script>
+
+</body>
+</html>

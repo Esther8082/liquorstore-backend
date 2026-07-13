@@ -1,8 +1,15 @@
 import { createSale } from "../api/sales.api.js";
+import { API_BASE_URL } from "../config/api.js";
 
 // =========================
 // DOM ELEMENTS
 // =========================
+const customerSearch =
+    document.getElementById("customer-search");
+
+const customerResults =
+    document.getElementById("customer-results");
+
 const totalElement = document.getElementById("total-amount");
 const changeElement = document.getElementById("change");
 
@@ -19,11 +26,31 @@ const summaryList = document.getElementById("summary-list");
 
 const printBtn = document.getElementById("print-btn");
 
+let customers = [];
+
+let selectedCustomer = {
+
+    customer_id: 1,
+
+    name: "Walk-in Customer"
+
+};
+
 // =========================
 // LOAD CART
 // =========================
 const cart = JSON.parse(localStorage.getItem("checkoutCart")) || [];
+async function loadCustomers(){
 
+    const response =
+        await fetch(`${API_BASE_URL}/customers`);
+
+    customers =
+        await response.json();
+
+}
+
+loadCustomers();
 // =========================
 // GRAND TOTAL
 // =========================
@@ -198,7 +225,7 @@ const changeGiven =
 
 const sale = {
 
-    customer_id: 1,
+customer_id: selectedCustomer.customer_id,
 
     payment_method: paymentMethod,
 
@@ -243,5 +270,85 @@ const sale = {
         alert(error.message);
 
     }
+
+});
+
+customerSearch.addEventListener("input", () => {
+
+    const value =
+        customerSearch.value
+            .toLowerCase()
+            .trim();
+
+    customerResults.innerHTML = "";
+customerResults.style.display = "block";
+
+    if(value === ""){
+
+        selectedCustomer = {
+
+            customer_id:1,
+
+            name:"Walk-in Customer"
+
+        };
+
+customerResults.style.display = "none";
+return;
+
+    }
+
+    const matches = customers.filter(customer =>
+
+        customer.name
+            .toLowerCase()
+            .includes(value)
+
+
+
+    );
+if (matches.length === 0) {
+
+    customerResults.innerHTML = `
+        <div class="customer-result">
+            No customer found
+        </div>
+    `;
+
+    customerResults.style.display = "block";
+    return;
+}
+    matches.forEach(customer=>{
+
+        const div =
+            document.createElement("div");
+
+        div.className = "customer-result";
+
+        div.innerHTML = `
+    <div class="customer-name">
+        ${customer.name}
+    </div>
+
+    <div class="customer-phone">
+        ${customer.phone_number || ""}
+    </div>
+`;
+
+        div.onclick = ()=>{
+
+            selectedCustomer = customer;
+
+            customerSearch.value =
+                customer.name;
+
+           customerResults.innerHTML = "";
+customerResults.style.display = "none";
+
+        };
+
+        customerResults.appendChild(div);
+
+    });
 
 });

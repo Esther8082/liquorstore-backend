@@ -9,7 +9,110 @@
     gap: 30px;
     align-items: stretch;
 }
+/* ==========================
+   CUSTOMER SECTION
+========================== */
 
+.customer-section{
+    position: relative;
+    margin-bottom:20px;
+}
+
+.customer-section h3{
+    margin-bottom:10px;
+    font-size:18px;
+    color:#333;
+}
+
+#customer-search{
+
+    width:100%;
+    padding:12px 15px;
+
+    border:1px solid #dcdcdc;
+    border-radius:8px;
+
+    font-size:15px;
+
+    outline:none;
+    transition:.2s;
+}
+
+#customer-search:focus{
+
+    border-color:#2c7be5;
+    box-shadow:0 0 0 3px rgba(44,123,229,.15);
+
+}
+
+#customer-results{
+
+    position:absolute;
+
+    top:75px;
+
+    left:0;
+    right:0;
+
+    background:white;
+
+    border:1px solid #ddd;
+
+    border-top:none;
+
+    max-height:220px;
+
+    overflow-y:auto;
+
+    display:none;
+
+    z-index:1000;
+
+    border-radius:0 0 8px 8px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+
+}
+
+.customer-result{
+
+    padding:12px 15px;
+
+    cursor:pointer;
+
+    border-bottom:1px solid #eee;
+
+    transition:.2s;
+
+}
+
+.customer-result:last-child{
+
+    border-bottom:none;
+
+}
+
+.customer-result:hover{
+
+    background:#f3f7ff;
+
+}
+
+.customer-name{
+
+    font-weight:600;
+
+}
+
+.customer-phone{
+
+    color:#666;
+
+    font-size:13px;
+
+    margin-top:3px;
+
+}
 /* =========================
    PANELS
 ========================= */
