@@ -186,6 +186,90 @@ console.log(items);
 
 };
 
+// =========================
+// GET SALE BY ID
+// =========================
+const getSaleById = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        // -------------------------
+        // Sale Header
+        // -------------------------
+        const saleResult = await databasePool.query(
+
+            `
+            SELECT
+                s.sale_id,
+                s.receipt_number,
+                s.created_at,
+                s.payment_method,
+                s.subtotal,
+                s.total,
+                s.amount_paid,
+                s.change_given,
+                c.name AS customer_name
+            FROM sales s
+            LEFT JOIN customers c
+                ON s.customer_id = c.customer_id
+            WHERE s.sale_id = $1
+            `,
+            [id]
+
+        );
+
+        if (saleResult.rows.length === 0) {
+
+            return res.status(404).json({
+                error: "Sale not found"
+            });
+
+        }
+
+        // -------------------------
+        // Sale Items
+        // -------------------------
+        const itemsResult = await databasePool.query(
+
+            `
+            SELECT
+                si.product_id,
+                p.item_name,
+                si.quantity,
+                si.selling_price,
+                si.line_total
+            FROM sale_items si
+            JOIN products p
+                ON si.product_id = p.product_id
+            WHERE si.sale_id = $1
+            `,
+            [id]
+
+        );
+
+        const sale = saleResult.rows[0];
+
+        sale.items = itemsResult.rows;
+
+        res.json(sale);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+
+};
+
 module.exports = {
     createSale
+     getSaleById
 };
