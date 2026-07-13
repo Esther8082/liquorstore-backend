@@ -45,6 +45,15 @@ const createSale = async (req, res) => {
             items
         } = req.body;
 
+        console.log("SALE RECEIVED");
+console.log(req.body);
+
+console.log("ITEMS");
+console.log(items);
+
+        // =========================
+        // GENERATE RECEIPT NUMBER
+        // =========================
         const receiptNumber =
             await generateReceiptNumber();
 
@@ -88,6 +97,61 @@ const createSale = async (req, res) => {
         const saleId =
             saleResult.rows[0].sale_id;
 
+        // =========================
+        // SAVE SALE ITEMS
+        // =========================
+        for (const item of items) {
+
+            await client.query(
+
+                `
+                INSERT INTO sale_items
+                (
+                    sale_id,
+                    product_id,
+                    quantity,
+                    selling_price,
+                    line_total
+                )
+                VALUES
+                (
+                    $1,$2,$3,$4,$5
+                )
+                `,
+
+                [
+                    saleId,
+                    item.product_id,
+                    item.quantity,
+                    item.selling_price,
+                    item.line_total
+                ]
+
+            );
+
+            // =========================
+            // UPDATE STOCK
+            // =========================
+            await client.query(
+
+                `
+                UPDATE products
+                SET quantity_in_stock = quantity_in_stock - $1
+                WHERE product_id = $2
+                `,
+
+                [
+                    item.quantity,
+                    item.product_id
+                ]
+
+            );
+
+        }
+
+        // =========================
+        // COMMIT
+        // =========================
         await client.query("COMMIT");
 
         res.status(201).json({
