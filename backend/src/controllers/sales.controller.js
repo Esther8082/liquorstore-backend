@@ -270,6 +270,6 @@ const getSaleById = async (req, res) => {
 };
 
 module.exports = {
-    createSale
+    createSale,
      getSaleById
 };
