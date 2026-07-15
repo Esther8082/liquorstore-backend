@@ -35,15 +35,17 @@ const createSale = async (req, res) => {
 
         await client.query("BEGIN");
 
-        const {
-            customer_id,
-            payment_method,
-            subtotal,
-            total,
-            amount_paid,
-            change_given,
-            items
-        } = req.body;
+       const {
+    customer_id,
+    payment_method,
+    subtotal,
+    total,
+    cash_amount,
+    card_amount,
+    amount_paid,
+    change_given,
+    items
+} = req.body;
 
         console.log("SALE RECEIVED");
 console.log(req.body);
@@ -63,34 +65,38 @@ console.log(items);
         const saleResult = await client.query(
 
             `
-            INSERT INTO sales
-            (
-                receipt_number,
-                customer_id,
-                payment_method,
-                subtotal,
-                total,
-                amount_paid,
-                change_given,
-                sale_status
-            )
-            VALUES
-            (
-                $1,$2,$3,$4,$5,$6,$7,$8
-            )
-            RETURNING sale_id
+           INSERT INTO sales
+(
+    receipt_number,
+    customer_id,
+    payment_method,
+    subtotal,
+    total,
+    cash_amount,
+    card_amount,
+    amount_paid,
+    change_given,
+    sale_status
+)
+VALUES
+(
+    $1,$2,$3,$4,$5,$6,$7,$8,$9,$10
+)
+RETURNING sale_id
             `,
 
-            [
-                receiptNumber,
-                customer_id,
-                payment_method,
-                subtotal,
-                total,
-                amount_paid,
-                change_given,
-                "Completed"
-            ]
+           [
+    receiptNumber,
+    customer_id,
+    payment_method,
+    subtotal,
+    total,
+    cash_amount,
+    card_amount,
+    amount_paid,
+    change_given,
+    "Completed"
+]
 
         );
 
@@ -201,16 +207,18 @@ const getSaleById = async (req, res) => {
         const saleResult = await databasePool.query(
 
             `
-            SELECT
-                s.sale_id,
-                s.receipt_number,
-                s.created_at,
-                s.payment_method,
-                s.subtotal,
-                s.total,
-                s.amount_paid,
-                s.change_given,
-                c.name AS customer_name
+          SELECT
+    s.sale_id,
+    s.receipt_number,
+    s.created_at,
+    s.payment_method,
+    s.subtotal,
+    s.total,
+    s.cash_amount,
+    s.card_amount,
+    s.amount_paid,
+    s.change_given,
+    c.name AS customer_name
             FROM sales s
             LEFT JOIN customers c
                 ON s.customer_id = c.customer_id
