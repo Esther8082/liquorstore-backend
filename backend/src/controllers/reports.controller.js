@@ -11,35 +11,35 @@ const getReport = async (req, res) => {
 
         let dateFilter = "";
 
-        switch (period) {
+       switch (period) {
 
-            case "today":
+    case "today":
 
-                dateFilter =
-                    "DATE(created_at) = CURRENT_DATE";
+        dateFilter =
+            "DATE(s.created_at) = CURRENT_DATE";
 
-                break;
+        break;
 
-            case "week":
+    case "week":
 
-                dateFilter =
-                    "created_at >= CURRENT_DATE - INTERVAL '7 days'";
+        dateFilter =
+            "s.created_at >= CURRENT_DATE - INTERVAL '7 days'";
 
-                break;
+        break;
 
-            case "month":
+    case "month":
 
-                dateFilter =
-                    "DATE_TRUNC('month', created_at) = DATE_TRUNC('month', CURRENT_DATE)";
+        dateFilter =
+            "DATE_TRUNC('month', s.created_at) = DATE_TRUNC('month', CURRENT_DATE)";
 
-                break;
+        break;
 
-            default:
+    default:
 
-                dateFilter =
-                    "DATE(created_at) = CURRENT_DATE";
+        dateFilter =
+            "DATE(s.created_at) = CURRENT_DATE";
 
-        }
+}
 
         // ============================
         // SUMMARY
@@ -62,7 +62,7 @@ const getReport = async (req, res) => {
 
                 COALESCE(AVG(total),0) AS average_sale
 
-            FROM sales
+            FROM sales s
 
             WHERE ${dateFilter}
             `
@@ -79,18 +79,17 @@ const getReport = async (req, res) => {
             SELECT
 
                 COALESCE(SUM(quantity),0) AS items_sold
+FROM sale_items
 
-            FROM sale_items
+WHERE sale_id IN (
 
-            WHERE sale_id IN (
+    SELECT sale_id
 
-                SELECT sale_id
+    FROM sales s
 
-                FROM sales
+    WHERE ${dateFilter}
 
-                WHERE ${dateFilter}
-
-            )
+)
             `
 
         );
