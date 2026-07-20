@@ -200,13 +200,33 @@ const fetchCustomerHistory = async (req, res) => {
 
         });
 
-        res.json({
+       const sales = [...salesMap.values()];
 
-            customer: customerResult.rows[0],
+const statistics = {
 
-            sales: [...salesMap.values()]
+    totalPurchases: sales.length,
 
-        });
+    totalSpent: sales.reduce(
+        (sum, sale) => sum + sale.total,
+        0
+    ),
+
+    lastPurchase:
+        sales.length > 0
+            ? sales[0].created_at
+            : null
+
+};
+
+res.json({
+
+    customer: customerResult.rows[0],
+
+    statistics,
+
+    sales
+
+});
 
     }
 
