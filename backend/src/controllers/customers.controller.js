@@ -244,8 +244,87 @@ res.json({
 
 };
 
+// =========================
+// UPDATE CUSTOMER
+// =========================
+
+const updateCustomer = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+
+        const {
+
+            name,
+            phone_number,
+            email,
+            customer_type
+
+        } = req.body;
+
+        const result = await databasePool.query(
+
+            `
+
+            UPDATE customers
+
+            SET
+
+                name = $1,
+                phone_number = $2,
+                email = $3,
+                customer_type = $4
+
+            WHERE customer_id = $5
+
+            RETURNING *;
+
+            `,
+
+            [
+
+                name,
+                phone_number,
+                email,
+                customer_type,
+                id
+
+            ]
+
+        );
+
+        if (result.rows.length === 0) {
+
+            return res.status(404).json({
+
+                error: "Customer not found."
+
+            });
+
+        }
+
+        res.json(result.rows[0]);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+
+            error: error.message
+
+        });
+
+    }
+
+};
+
 module.exports = {
     fetchCustomers,
     createCustomer,
-    fetchCustomerHistory
+    fetchCustomerHistory,
+    updateCustomer
 };

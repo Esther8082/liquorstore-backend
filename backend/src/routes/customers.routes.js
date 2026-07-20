@@ -6,12 +6,17 @@ const {
 
     fetchCustomers,
     createCustomer,
-    fetchCustomerHistory
+    fetchCustomerHistory,
+    updateCustomer
 
 } = require("../controllers/customers.controller");
 
 router.get("/", fetchCustomers);
-router.get("/:id/history", fetchCustomerHistory);
+
 router.post("/", createCustomer);
+
+router.get("/:id/history", fetchCustomerHistory);
+
+router.put("/:id", updateCustomer);
 
 module.exports = router;
