@@ -32,6 +32,8 @@ const salesRoutes = require("./src/routes/sales.route");
 const customersRoutes =require("./src/routes/customers.routes");
 const reportsRoutes =
 require("./src/routes/reports.routes");
+const settingsRoutes =
+require("./routes/settings.routes");
 
 app.get("/", (req, res) => {
     res.send("LIQUOR STORE POS Backend Running");
@@ -42,7 +44,7 @@ app.use("/categories", categoriesRoutes);
 app.use("/sales", salesRoutes);
 app.use("/customers", customersRoutes);
 app.use("/reports", reportsRoutes);
-
+app.use("/settings", require("./src/routes/settings.routes"));
 // ========================
 // ERROR HANDLER (ADD HERE)
 // ========================
