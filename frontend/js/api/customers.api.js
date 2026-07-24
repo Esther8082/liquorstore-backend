@@ -22,3 +22,35 @@ export async function createCustomer(customer) {
 
     return data;
 }
+
+export async function updateCustomer(customerId, customer) {
+
+    const response = await fetch(
+
+        `${API_BASE_URL}/customers/${customerId}`,
+
+        {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(customer)
+
+        }
+
+    );
+
+    if (!response.ok) {
+
+        const error = await response.json();
+
+        throw new Error(error.error);
+
+    }
+
+    return await response.json();
+
+}

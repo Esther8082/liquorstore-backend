@@ -1,13 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Products</title>
+
+    <title>Sales Reports</title>
+
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/reports.css">
+
 </head>
+
 <body>
 
-    <h1>Reports Page</h1>
+<header class="page-header">
+
+    <div>
+
+        <h1>Sales Reports</h1>
+
+        <p class="report-subtitle">
+            View sales performance and transaction history
+        </p>
+
+    </div>
+
+    <div class="filters">
+
+        <button class="filter-btn active" data-filter="today">
+            Today
+        </button>
+
+        <button class="filter-btn" data-filter="week">
+            This Week
+        </button>
+
+        <button class="filter-btn" data-filter="month">
+            This Month
+        </button>
+
+    </div>
+
+</header>
+
+<main class="reports-container">
+
+    <!-- SUMMARY -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card total">
+            <h3>Total Sales</h3>
+            <h2 id="total-sales">R0.00</h2>
+        </div>
+
+        <div class="summary-card transactions">
+            <h3>Transactions</h3>
+            <h2 id="transaction-count">0</h2>
+        </div>
+
+        <div class="summary-card items">
+            <h3>Items Sold</h3>
+            <h2 id="items-sold">0</h2>
+        </div>
+
+        <div class="summary-card split">
+            <h3>Split Payments</h3>
+            <h2 id="split-sales">R0.00</h2>
+        </div>
+
+        <div class="summary-card cash">
+            <h3>Cash Sales</h3>
+            <h2 id="cash-sales">R0.00</h2>
+        </div>
+
+        <div class="summary-card card-payment">
+            <h3>Card Sales</h3>
+            <h2 id="card-sales">R0.00</h2>
+        </div>
+
+    </section>
+
+    <!-- BEST / LEAST -->
+
+    <section class="products-summary">
+
+        <div class="summary-box">
+
+            <h3>🏆 Best Seller</h3>
+
+            <p id="best-product">-</p>
+
+            <small id="best-product-qty"></small>
+
+        </div>
+
+        <div class="summary-box">
+
+            <h3>📉 Least Selling Product</h3>
+
+            <p id="least-product">-</p>
+
+            <small id="least-product-qty"></small>
+
+        </div>
+
+    </section>
+
+    <!-- SALES -->
+
+   <section class="sales-history">
+
+    <h2>Sales History</h2>
+
+    <div id="sales-history">
+
+    </div>
+
+</section>
+
+    <!-- TOP PRODUCTS -->
+
+    <section class="table-section">
+
+        <h2>Top Selling Products</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Product</th>
+
+                    <th>Quantity</th>
+
+                    <th>Revenue</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="top-products-body">
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <!-- LEAST PRODUCTS -->
+
+    <section class="table-section">
+
+        <h2>Least Selling Products</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Product</th>
+
+                    <th>Quantity</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="least-products-body">
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+<script type="module" src="js/pages/reports.js"></script>
 
 </body>
+
 </html>

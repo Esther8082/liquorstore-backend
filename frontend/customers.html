@@ -2,10 +2,13 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>Customers</title>
 
     <link rel="stylesheet" href="css/customers.css">
+
 </head>
 
 <body>
@@ -62,6 +65,162 @@
 </div>
 
 <!-- =========================
+CUSTOMER DETAILS PANEL
+========================= -->
+
+<div
+    id="customer-details"
+    class="customer-panel">
+
+    <div class="customer-panel-header">
+
+        <h2 id="detail-name">
+            Customer
+        </h2>
+
+        <button id="close-details-btn">
+
+            ✕
+
+        </button>
+
+    </div>
+
+    <div class="customer-content">
+
+        <!-- LEFT SIDE -->
+
+        <div class="customer-left">
+
+            <div class="info-card">
+
+                <h3>Customer Information</h3>
+
+                <p>
+
+                    <strong>Name</strong><br>
+
+                    <span id="detail-name-text"></span>
+
+                </p>
+
+                <p>
+
+                    <strong>Phone</strong><br>
+
+                    <span id="detail-phone"></span>
+
+                </p>
+
+                <p>
+
+                    <strong>Email</strong><br>
+
+                    <span id="detail-email"></span>
+
+                </p>
+
+                <p>
+
+                    <strong>Customer Type</strong><br>
+
+                    <span id="detail-type"></span>
+
+                </p>
+
+                <button
+                    id="edit-customer-btn"
+                    class="primary-btn">
+
+                    ✏ Edit Customer
+
+                </button>
+
+            </div>
+
+            <div class="stats-card">
+
+                <h3>Statistics</h3>
+
+                <p>
+
+                    Total Purchases
+
+                    <strong id="customer-transactions">
+
+                        0
+
+                    </strong>
+
+                </p>
+
+                <p>
+
+                    Total Spent
+
+                    <strong id="customer-total">
+
+                        R0.00
+
+                    </strong>
+
+                </p>
+
+                <p>
+
+                    Last Purchase
+
+                    <strong id="customer-last">
+
+                        -
+
+                    </strong>
+
+                </p>
+
+            </div>
+
+            <div class="actions-card">
+
+                <button id="print-statement-btn">
+
+                    🖨 Print Statement
+
+                </button>
+
+                <button id="email-statement-btn">
+
+                    📧 Email Statement
+
+                </button>
+
+                <button id="whatsapp-statement-btn">
+
+                    💬 WhatsApp Statement
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="customer-right">
+
+            <h3>Purchase History</h3>
+
+            <div id="purchase-history">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================
 ADD CUSTOMER MODAL
 ========================= -->
 
@@ -91,11 +250,15 @@ ADD CUSTOMER MODAL
         <select id="customer-type">
 
             <option value="Cash">
+
                 Cash Customer
+
             </option>
 
             <option value="Account">
+
                 Account Customer
+
             </option>
 
         </select>
@@ -124,7 +287,73 @@ ADD CUSTOMER MODAL
 
 </div>
 
+<!-- =========================
+EDIT CUSTOMER MODAL
+========================= -->
+
+<div
+    id="edit-customer-modal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <h2>Edit Customer</h2>
+
+        <input
+            id="edit-name"
+            type="text"
+            placeholder="Customer Name">
+
+        <input
+            id="edit-phone"
+            type="text"
+            placeholder="Phone Number">
+
+        <input
+            id="edit-email"
+            type="email"
+            placeholder="Email">
+
+        <select id="edit-type">
+
+            <option value="Cash">
+
+                Cash Customer
+
+            </option>
+
+            <option value="Account">
+
+                Account Customer
+
+            </option>
+
+        </select>
+
+        <div class="modal-buttons">
+
+            <button
+                id="cancel-edit-btn">
+
+                Cancel
+
+            </button>
+
+            <button
+                id="save-edit-btn">
+
+                💾 Save Changes
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <script type="module" src="js/pages/customers.js"></script>
 
 </body>
+
 </html>

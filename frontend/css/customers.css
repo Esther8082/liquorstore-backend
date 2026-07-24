@@ -305,7 +305,185 @@ body{
     border-color:#2563eb;
 
 }
+/* ===========================
+PURCHASE HISTORY
+=========================== */
 
+.purchase-card{
+
+    background:#fff;
+
+    border:1px solid #e6e6e6;
+
+    border-radius:12px;
+
+    margin-bottom:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+
+}
+
+.purchase-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    padding:18px 20px 12px;
+
+}
+
+.purchase-left h4{
+
+    margin:0;
+
+    font-size:18px;
+
+}
+
+.purchase-left small{
+
+    display:block;
+
+    margin-top:8px;
+
+    color:#777;
+
+}
+
+.purchase-right{
+
+    text-align:right;
+
+}
+
+.purchase-right h3{
+
+    margin:8px 0 0;
+
+    color:#1b7f38;
+
+    font-size:22px;
+
+}
+
+.payment-badge{
+
+    background:#eaf4ff;
+
+    color:#0b5ed7;
+
+    padding:5px 12px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    text-transform:capitalize;
+
+}
+
+.purchase-divider{
+
+    border:none;
+
+    border-top:1px solid #ececec;
+
+    margin:0;
+
+}
+
+.expand-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#fafafa;
+
+    padding:14px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.expand-btn:hover{
+
+    background:#f1f1f1;
+
+}
+
+.purchase-items{
+
+    display:none;
+
+    padding:18px 20px;
+
+}
+
+.purchase-items.show{
+
+    display:block;
+
+}
+
+.purchase-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    padding:14px 0;
+
+    border-bottom:1px solid #f1f1f1;
+
+}
+
+.purchase-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.purchase-item-left{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.purchase-item-left strong{
+
+    margin-bottom:6px;
+
+}
+
+.purchase-item-left small{
+
+    color:#777;
+
+}
+
+.purchase-item-total{
+
+    color:#1b7f38;
+
+    font-size:16px;
+
+}
 /* =========================
    MODAL BUTTONS
 ========================= */
@@ -351,5 +529,172 @@ body{
 #save-customer-btn:hover{
 
     background:#1d4ed8;
+
+}
+
+
+
+.details-header h2{
+
+    margin:0;
+
+}
+
+#close-details-btn{
+
+    border:none;
+
+    background:#f44336;
+
+    color:white;
+
+    width:35px;
+
+    height:35px;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+}
+
+/* =========================
+   CUSTOMER PANEL
+========================= */
+
+.customer-panel{
+    position:fixed;
+
+    top:30px;
+    right:30px;
+
+    width:900px;
+    height:700px;
+
+    min-width:700px;
+    min-height:500px;
+
+    max-width:95vw;
+    max-height:90vh;
+
+    background:#f8fafc;
+
+    border-radius:16px;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.18);
+
+    overflow:auto;
+
+    resize:both;
+
+    display:none;
+
+    z-index:999;
+}
+
+.customer-panel.show{
+    display:block;
+}
+
+.customer-panel-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 25px;
+    background:#111827;
+    color:white;
+}
+
+.customer-panel-header h2{
+    margin:0;
+    font-size:28px;
+}
+
+.customer-content{
+    display:flex;
+    gap:25px;
+    padding:25px;
+}
+
+.customer-left{
+    width:280px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.customer-right{
+    flex:1;
+    overflow-y:auto;
+    max-height:70vh;
+}
+
+.actions-card{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.actions-card button{
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:14px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    font-size:15px;
+
+    transition:.2s;
+
+}
+
+#print-statement-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+}
+
+#email-statement-btn{
+
+    background:#10b981;
+
+    color:white;
+
+}
+
+#whatsapp-statement-btn{
+
+    background:#25D366;
+
+    color:white;
+
+}
+
+.actions-card button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.stats-card p{
+
+    background:#f8fafc;
+
+    padding:10px 14px;
+
+    border-radius:8px;
 
 }

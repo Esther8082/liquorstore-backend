@@ -1,5 +1,6 @@
 const API_BASE_URL = "https://liquorstore-api.onrender.com";
 let allProducts = [];
+let categories = [];
 
 // =========================
 // LOAD PRODUCTS
@@ -17,7 +18,98 @@ async function loadInventory() {
     }
 }
 
-loadInventory();
+
+async function loadCategories() {
+
+    try {
+
+        const response =
+            await fetch(`${API_BASE_URL}/categories`);
+
+        categories = await response.json();
+
+        renderCategories();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+function renderCategories() {
+
+    const list =
+        document.getElementById("category-list");
+
+    list.innerHTML = "";
+
+    // All Products button
+    const allItem = document.createElement("li");
+
+    allItem.innerHTML = `
+        <button class="sidebar-btn active">
+            All Products
+        </button>
+    `;
+
+    allItem.querySelector("button").addEventListener("click", () => {
+
+        setActiveButton(allItem.querySelector("button"));
+
+        renderCards(allProducts);
+
+    });
+
+    list.appendChild(allItem);
+
+    // Database categories
+    categories.forEach(category => {
+
+        const li =
+            document.createElement("li");
+
+        li.innerHTML = `
+            <button class="sidebar-btn">
+                ${category.category_name}
+            </button>
+        `;
+
+        li.querySelector("button").addEventListener("click", () => {
+
+            setActiveButton(li.querySelector("button"));
+
+            filterCategory(category.category_name);
+
+        });
+
+        list.appendChild(li);
+
+    });
+
+}
+async function init() {
+
+    await loadInventory();
+
+    await loadCategories();
+
+}
+
+init();
+function setActiveButton(button) {
+
+    document.querySelectorAll(".sidebar-btn").forEach(btn =>
+
+        btn.classList.remove("active")
+
+    );
+
+    button.classList.add("active");
+
+}
 
 const searchInput = document.getElementById("inventory-search");
 
@@ -49,37 +141,62 @@ function renderCards(products) {
         const card = document.createElement("div");
         card.classList.add("product-card");
 
-       const imageUrl = product.image_url
+      const imageUrl = product.image_url
     ? `${API_BASE_URL}${product.image_url}`
-    : "https://via.placeholder.com/150";
-    
-        const stockClass =
-            product.quantity_in_stock > 0
-                ? "in-stock"
-                : "out-stock";
+    : "./logoimage/noimageavilable.jpeg";
+        
+let stockColor = "#16a34a"; // Green
 
-        const stockText =
-            product.quantity_in_stock > 0
-                ? "In Stock"
-                : "Out of Stock";
+if (product.quantity_in_stock <= 0) {
 
-        card.innerHTML = `
-            <div class="img-wrapper">
-                <img src="${imageUrl}" alt="${product.item_name}" class="product-img">
-            </div>
+    stockColor = "#dc2626"; // Red
 
-            <h3>${product.item_name}</h3>
+}
+else if (product.quantity_in_stock <= 5) {
 
-            <p><strong>Category:</strong> ${product.category_name || "Unassigned"}</p>
+    stockColor = "#f59e0b"; // Orange
 
-            <p><strong>Price:</strong> R ${product.price}</p>
+}
 
-            <p><strong>Stock:</strong> ${product.quantity_in_stock}</p>
+       card.innerHTML = `
+    <div class="img-wrapper">
+        <img src="${imageUrl}" alt="${product.item_name}" class="product-img">
+    </div>
 
-            <span class="stock ${stockClass}">
-                ${stockText}
-            </span>
-        `;
+    <h3>${product.item_name}</h3>
+
+    <p>
+        <strong>Barcode:</strong>
+        ${product.barcode}
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        ${product.category_name || "Unassigned"}
+    </p>
+
+    <p>
+        <strong>Price:</strong>
+        R ${Number(product.price).toFixed(2)}
+    </p>
+
+   <p>
+
+    <strong>Stock:</strong>
+
+    <span
+        style="
+            color:${stockColor};
+            font-weight:bold;
+        "
+    >
+
+        ${product.quantity_in_stock}
+
+    </span>
+
+</p>  
+`;
 
         // ✅ FIX: attach click INSIDE loop
         const img = card.querySelector(".product-img");
@@ -112,18 +229,7 @@ function filterCategory(categoryName) {
 // =========================
 // BUTTON EVENTS
 // =========================
-document.addEventListener("DOMContentLoaded", () => {
 
-    const allBtn = document.getElementById("filter-all");
-    const quartsBtn = document.getElementById("filter-quarts");
-    const dumpiesBtn = document.getElementById("filter-dumpies");
-    const champagnesBtn = document.getElementById("filter-champagnes");
-
-    allBtn?.addEventListener("click", () => filterCategory("ALL"));
-    quartsBtn?.addEventListener("click", () => filterCategory("Quarts"));
-    dumpiesBtn?.addEventListener("click", () => filterCategory("Dumpies"));
-    champagnesBtn?.addEventListener("click", () => filterCategory("Champagnes"));
-});
 function openImageModal(imageUrl, title) {
 
     let modal = document.getElementById("image-modal");

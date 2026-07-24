@@ -1,5 +1,6 @@
 import { createSale } from "../api/sales.api.js";
 import { API_BASE_URL } from "../config/api.js";
+import { printReceipt } from "./receipt.js";
 
 // =========================
 // DOM ELEMENTS
@@ -180,6 +181,7 @@ document
 
 });
 
+
 // =========================
 // PRINT
 // =========================
@@ -200,38 +202,73 @@ if(!paymentMethod){
 
 let amountPaid = 0;
 
-if(paymentMethod === "cash"){
+let cashAmount = 0;
 
-    amountPaid =
-        Number(receivedInput.value);
+let cardAmount = 0;
+
+if (paymentMethod === "cash") {
+
+    cashAmount = Number(receivedInput.value);
+
+    amountPaid = cashAmount;
 
 }
-else if(paymentMethod === "card"){
+else if (paymentMethod === "card") {
 
-    amountPaid =
-        grandTotal;
+    cardAmount = grandTotal;
+
+    amountPaid = grandTotal;
 
 }
-else{
+else {
 
-    amountPaid =
-        Number(cashAmountInput.value) +
-        Number(cardAmountInput.value);
+    cashAmount = Number(cashAmountInput.value);
+
+    cardAmount = Number(cardAmountInput.value);
+
+    amountPaid = cashAmount + cardAmount;
 
 }
 
 const changeGiven =
     Math.max(0, amountPaid - grandTotal);
 
+// =========================
+// VALIDATE PAYMENT
+// =========================
+if (paymentMethod === "cash" && cashAmount < grandTotal) {
+
+    alert("Cash received is less than the total.");
+
+    return;
+
+}
+
+if (paymentMethod === "split" && amountPaid < grandTotal) {
+
+    alert("Split payment is less than the total.");
+
+    return;
+
+}
+
+// =========================
+// SALE OBJECT
+// =========================
+
 const sale = {
 
-customer_id: selectedCustomer.customer_id,
+    customer_id: selectedCustomer.customer_id,
 
     payment_method: paymentMethod,
 
     subtotal: grandTotal,
 
     total: grandTotal,
+
+    cash_amount: cashAmount,
+
+    card_amount: cardAmount,
 
     amount_paid: amountPaid,
 
@@ -247,29 +284,25 @@ customer_id: selectedCustomer.customer_id,
 
         line_total: item.total
 
-  }))
+    }))
 
-        };
+}; 
 
-        const response = await createSale(sale);
+       const response = await createSale(sale);
 
-        console.log(response);
+await printReceipt(response.sale_id);
 
-        alert("Sale saved successfully.");
+localStorage.removeItem("checkoutCart");
 
-        localStorage.removeItem("checkoutCart");
+window.location.href = "index.html";
 
-        window.location.href = "index.html";
+} catch (error) {
 
-    }
+    console.error(error);
 
-    catch (error) {
+    alert(error.message);
 
-        console.error(error);
-
-        alert(error.message);
-
-    }
+}
 
 });
 

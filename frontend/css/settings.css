@@ -1,0 +1,236 @@
+/* =========================
+   PAGE
+========================= */
+
+body{
+    margin:0;
+    padding:30px;
+    font-family:"Segoe UI",sans-serif;
+    background:#f4f6f9;
+    color:#1f2937;
+}
+
+.page{
+
+    max-width:900px;
+    margin:auto;
+
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.page-header{
+
+    margin-bottom:30px;
+
+}
+
+.page-header h1{
+
+    margin:0;
+    font-size:34px;
+    font-weight:700;
+
+}
+
+.page-subtitle{
+
+    color:#6b7280;
+    margin-top:8px;
+
+}
+
+/* =========================
+   SETTINGS CARD
+========================= */
+
+.settings-card{
+
+    background:#fff;
+    border-radius:14px;
+    padding:30px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.settings-card h2{
+
+    margin-top:0;
+    margin-bottom:10px;
+
+}
+
+.section-description{
+
+    color:#6b7280;
+    margin-bottom:25px;
+
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group{
+
+    display:flex;
+    flex-direction:column;
+    margin-bottom:20px;
+
+}
+
+.form-group label{
+
+    font-weight:600;
+    margin-bottom:8px;
+
+}
+
+.form-group input{
+
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:10px;
+    font-size:15px;
+    transition:.2s;
+
+}
+
+.form-group input:focus{
+
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+
+}
+
+/* =========================
+   CHECKBOX
+========================= */
+
+.checkbox-group{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:25px 0;
+
+}
+
+.checkbox-group input{
+
+    width:18px;
+    height:18px;
+
+}
+
+.checkbox-group label{
+
+    font-weight:600;
+
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.button-group{
+
+    display:flex;
+    gap:15px;
+    margin-top:25px;
+
+}
+
+.primary-btn{
+
+    background:#2563eb;
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.2s;
+
+}
+
+.primary-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+.secondary-btn{
+
+    background:#10b981;
+    color:white;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.2s;
+
+}
+
+.secondary-btn:hover{
+
+    background:#059669;
+
+}
+
+/* =========================
+   COMING SOON
+========================= */
+
+.settings-card.disabled{
+
+    opacity:.65;
+
+}
+
+.settings-card.disabled h2{
+
+    color:#6b7280;
+
+}
+
+.settings-card.disabled p{
+
+    margin-bottom:0;
+    color:#9ca3af;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+
+    body{
+
+        padding:15px;
+
+    }
+
+    .button-group{
+
+        flex-direction:column;
+
+    }
+
+    .primary-btn,
+    .secondary-btn{
+
+        width:100%;
+
+    }
+
+}

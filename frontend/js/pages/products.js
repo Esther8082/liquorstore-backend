@@ -149,7 +149,7 @@ function renderProducts(data) {
     tbody.innerHTML = "";
 
     if (!data || data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7">No products found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6">No products found</td></tr>`;
         return;
     }
 
@@ -158,15 +158,22 @@ function renderProducts(data) {
         row.dataset.productId = p.product_id;
     row.dataset.barcode = p.barcode;
 
-        row.innerHTML = `
-            <td>${p.barcode}</td>
-            <td>${p.item_name}</td>
-            <td>${p.category_name}</td>
-            <td>${p.item_size}</td>
-            <td>R ${p.price}</td>
-            <td>${p.quantity_in_stock}</td>
-            <td>${p.quantity_in_stock > 0 ? "In Stock" : "Out of Stock"}</td>
-        `;
+row.innerHTML = `
+    <td>${p.barcode}</td>
+    <td>${p.item_name}</td>
+    <td>${p.category_name}</td>
+    <td>${p.item_size}</td>
+    <td>R ${Number(p.price).toFixed(2)}</td>
+
+    <td
+        style="
+            color: ${p.quantity_in_stock <= 0 ? "#dc2626" : "inherit"};
+            font-weight: ${p.quantity_in_stock <= 0 ? "bold" : "normal"};
+        "
+    >
+        ${p.quantity_in_stock}
+    </td>
+`;
 
         tbody.appendChild(row);
     });
@@ -184,16 +191,37 @@ tbody.addEventListener("click", (e) => {
         p => p.barcode.toString() === barcode
     );
 
-    if (!product) return;
+if (!product) return;
+
+if (product.quantity_in_stock <= 0) {
+
+    alert(`${product.item_name} is out of stock.`);
+
+    return;
+
+}
+    
 
     const existing = cart.find(
         item => item.barcode === product.barcode
     );
 
     if (existing) {
-        existing.quantity++;
-        existing.total = existing.quantity * existing.price;
-    } else {
+
+    if (existing.quantity >= product.quantity_in_stock) {
+
+        alert(`Only ${product.quantity_in_stock} in stock.`);
+
+        return;
+
+    }
+
+    existing.quantity++;
+    existing.total = existing.quantity * existing.price;
+
+}
+    
+    else {
         
        cart.push({
     product_id: product.product_id,
@@ -266,11 +294,30 @@ function attachQtyListeners() {
 
             if (isNaN(value) || value < 1) value = 1;
 
-            const item = cart.find(c => c.barcode == barcode);
+           const item = cart.find(c => c.barcode == barcode);
 
-            if (!item) return;
+if (!item) return;
 
-            item.quantity = value;
+const product = products.find(
+    p => p.barcode == barcode
+);
+
+if (!product) return;
+
+if (value > product.quantity_in_stock) {
+
+    value = product.quantity_in_stock;
+
+    alert(`Only ${product.quantity_in_stock} in stock.`);
+
+    e.target.value = value;
+
+}
+
+item.quantity = value;
+item.total = item.price * value;
+
+
             item.total = item.price * value;
 
             saveCart();
