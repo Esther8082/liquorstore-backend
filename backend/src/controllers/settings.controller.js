@@ -177,17 +177,34 @@ const sendTestEmail = async (req, res) => {
 
     }
 
-    catch (error) {
+   catch (error) {
 
-        console.error(error);
+    console.error("========== EMAIL ERROR ==========");
+    console.error(error);
+    console.error("Message:", error.message);
 
-        res.status(500).json({
-
-            error: error.message
-
-        });
-
+    if (error.code) {
+        console.error("Code:", error.code);
     }
+
+    if (error.response) {
+        console.error("Response:", error.response);
+    }
+
+    if (error.responseCode) {
+        console.error("Response Code:", error.responseCode);
+    }
+
+    console.error(error.stack);
+    console.error("=================================");
+
+    res.status(500).json({
+
+        error: error.message
+
+    });
+
+}
 
 };
 
