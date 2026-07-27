@@ -14,6 +14,8 @@ const getSettings = async (req, res) => {
         const result = await databasePool.query(`
             SELECT
                 setting_id,
+                sender_email,
+                brevo_api_key,
                 manager_email,
                 daily_reports_enabled,
                 report_time
@@ -47,6 +49,8 @@ const updateSettings = async (req, res) => {
 
         const {
 
+            sender_email,
+            brevo_api_key,
             manager_email,
             daily_reports_enabled,
             report_time
@@ -58,15 +62,19 @@ const updateSettings = async (req, res) => {
             `
             UPDATE settings
             SET
-                manager_email = $1,
-                daily_reports_enabled = $2,
-                report_time = $3
+                sender_email = $1,
+                brevo_api_key = $2,
+                manager_email = $3,
+                daily_reports_enabled = $4,
+                report_time = $5
             WHERE setting_id = 1
             RETURNING *
             `,
 
             [
 
+                sender_email,
+                brevo_api_key,
                 manager_email,
                 daily_reports_enabled,
                 report_time
@@ -103,10 +111,11 @@ const sendTestEmail = async (req, res) => {
 
         const result = await databasePool.query(`
 
-            SELECT manager_email
-
+            SELECT
+                sender_email,
+                brevo_api_key,
+                manager_email
             FROM settings
-
             WHERE setting_id = 1
 
         `);
@@ -121,10 +130,9 @@ const sendTestEmail = async (req, res) => {
 
         }
 
-        const email =
-            result.rows[0].manager_email;
+        const settings = result.rows[0];
 
-        if (!email) {
+        if (!settings.manager_email) {
 
             return res.status(400).json({
 
@@ -134,9 +142,31 @@ const sendTestEmail = async (req, res) => {
 
         }
 
+        if (!settings.sender_email) {
+
+            return res.status(400).json({
+
+                error: "Sender email is not configured."
+
+            });
+
+        }
+
+        if (!settings.brevo_api_key) {
+
+            return res.status(400).json({
+
+                error: "Brevo API Key is not configured."
+
+            });
+
+        }
+
         await sendEmail(
 
-            email,
+            settings.sender_email,
+            settings.brevo_api_key,
+            settings.manager_email,
 
             "LiquorStore POS Test Email",
 
@@ -152,9 +182,7 @@ const sendTestEmail = async (req, res) => {
 
             <p>
 
-                If you received this email,
-                your email configuration is
-                working correctly.
+                Your email configuration is working correctly.
 
             </p>
 
@@ -177,34 +205,17 @@ const sendTestEmail = async (req, res) => {
 
     }
 
-   catch (error) {
+    catch (error) {
 
-    console.error("========== EMAIL ERROR ==========");
-    console.error(error);
-    console.error("Message:", error.message);
+        console.error(error);
 
-    if (error.code) {
-        console.error("Code:", error.code);
+        res.status(500).json({
+
+            error: error.message
+
+        });
+
     }
-
-    if (error.response) {
-        console.error("Response:", error.response);
-    }
-
-    if (error.responseCode) {
-        console.error("Response Code:", error.responseCode);
-    }
-
-    console.error(error.stack);
-    console.error("=================================");
-
-    res.status(500).json({
-
-        error: error.message
-
-    });
-
-}
 
 };
 
@@ -212,6 +223,6 @@ module.exports = {
 
     getSettings,
     updateSettings,
-    sendTestEmail   
+    sendTestEmail
 
 };

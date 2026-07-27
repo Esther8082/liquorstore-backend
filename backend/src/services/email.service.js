@@ -1,6 +1,14 @@
 const axios = require("axios");
 
-async function sendEmail(to, subject, html) {
+async function sendEmail(
+
+    senderEmail,
+    brevoApiKey,
+    to,
+    subject,
+    html
+
+) {
 
     const response = await axios.post(
 
@@ -12,7 +20,7 @@ async function sendEmail(to, subject, html) {
 
                 name: "LiquorStore POS",
 
-                email: "estherakindele09@gmail.com"
+                email: senderEmail
 
             },
 
@@ -36,7 +44,7 @@ async function sendEmail(to, subject, html) {
 
             headers: {
 
-                "api-key": process.env.BREVO_API_KEY,
+                "api-key": brevoApiKey,
 
                 "Content-Type": "application/json"
 
