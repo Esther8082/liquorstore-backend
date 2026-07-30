@@ -1,24 +1,74 @@
 const API_BASE_URL = "https://liquorstore-api.onrender.com";
+
+// =========================
+// SIDEBAR ELEMENTS
+// =========================
+const menuBtn = document.getElementById("menu-btn");
+const sidebar = document.getElementById("sidebar");
+
+const searchInput = document.getElementById("inventory-search");
+const closeBtn = document.getElementById("closeInventoryBtn");
+
 let allProducts = [];
 let categories = [];
 
 // =========================
-// LOAD PRODUCTS
+// INIT
+// =========================
+async function init() {
+
+    setupSidebar();
+
+    await Promise.all([
+        loadInventory(),
+        loadCategories()
+    ]);
+
+}
+
+init();
+
+// =========================
+// SIDEBAR
+// =========================
+function setupSidebar() {
+
+    if (!menuBtn || !sidebar) return;
+
+    menuBtn.addEventListener("click", () => {
+
+        sidebar.classList.toggle("active");
+
+    });
+
+}
+
+// =========================
+// LOAD INVENTORY
 // =========================
 async function loadInventory() {
 
     try {
 
-        const res = await fetch(`${API_BASE_URL}/products`); allProducts = await res.json();
+        const res = await fetch(`${API_BASE_URL}/products`);
+
+        allProducts = await res.json();
 
         renderCards(allProducts);
 
-    } catch (error) {
-        console.error("INVENTORY LOAD ERROR:", error);
     }
+
+    catch (error) {
+
+        console.error("INVENTORY LOAD ERROR:", error);
+
+    }
+
 }
 
-
+// =========================
+// LOAD CATEGORIES
+// =========================
 async function loadCategories() {
 
     try {
@@ -34,11 +84,15 @@ async function loadCategories() {
 
     catch (error) {
 
-        console.error(error);
+        console.error("CATEGORY LOAD ERROR:", error);
 
     }
 
 }
+
+// =========================
+// RENDER SIDEBAR CATEGORIES
+// =========================
 function renderCategories() {
 
     const list =
@@ -46,8 +100,9 @@ function renderCategories() {
 
     list.innerHTML = "";
 
-    // All Products button
-    const allItem = document.createElement("li");
+    // ALL PRODUCTS
+    const allItem =
+        document.createElement("li");
 
     allItem.innerHTML = `
         <button class="sidebar-btn active">
@@ -55,17 +110,21 @@ function renderCategories() {
         </button>
     `;
 
-    allItem.querySelector("button").addEventListener("click", () => {
+    allItem
+        .querySelector("button")
+        .addEventListener("click", () => {
 
-        setActiveButton(allItem.querySelector("button"));
+            setActiveButton(
+                allItem.querySelector("button")
+            );
 
-        renderCards(allProducts);
+            renderCards(allProducts);
 
-    });
+        });
 
     list.appendChild(allItem);
 
-    // Database categories
+    // DATABASE CATEGORIES
     categories.forEach(category => {
 
         const li =
@@ -77,191 +136,250 @@ function renderCategories() {
             </button>
         `;
 
-        li.querySelector("button").addEventListener("click", () => {
+        li.querySelector("button")
+            .addEventListener("click", () => {
 
-            setActiveButton(li.querySelector("button"));
+                setActiveButton(
+                    li.querySelector("button")
+                );
 
-            filterCategory(category.category_name);
+                filterCategory(
+                    category.category_name
+                );
 
-        });
+            });
 
         list.appendChild(li);
 
     });
 
 }
-async function init() {
 
-    await loadInventory();
-
-    await loadCategories();
-
-}
-
-init();
+// =========================
+// ACTIVE SIDEBAR BUTTON
+// =========================
 function setActiveButton(button) {
 
-    document.querySelectorAll(".sidebar-btn").forEach(btn =>
-
-        btn.classList.remove("active")
-
-    );
+    document
+        .querySelectorAll(".sidebar-btn")
+        .forEach(btn => btn.classList.remove("active"));
 
     button.classList.add("active");
 
 }
 
-const searchInput = document.getElementById("inventory-search");
+// =========================
+// SEARCH
+// =========================
+searchInput.addEventListener("input", () => {
 
-searchInput.addEventListener("input", function () {
+    const searchTerm =
+        searchInput.value.trim().toLowerCase();
 
-    const searchTerm = this.value.toLowerCase();
+    const filtered =
+        allProducts.filter(product =>
 
-   const filtered = allProducts.filter(product => {
+            product.item_name?.toLowerCase().includes(searchTerm) ||
 
-    return (
-        product.item_name?.toLowerCase().includes(searchTerm) ||
-        String(product.barcode).includes(searchTerm) ||
-        product.category_name?.toLowerCase().includes(searchTerm)
-    );
-});
+            String(product.barcode).includes(searchTerm) ||
+
+            product.category_name?.toLowerCase().includes(searchTerm)
+
+        );
 
     renderCards(filtered);
+
 });
 
-/*render cards*/ 
-
-function renderCards(products) {
-
-    const container = document.getElementById("inventory-grid");
-    container.innerHTML = "";
-
-    products.forEach(product => {
-
-        const card = document.createElement("div");
-        card.classList.add("product-card");
-
-      const imageUrl = product.image_url
-    ? `${API_BASE_URL}${product.image_url}`
-    : "./logoimage/noimageavilable.jpeg";
-        
-let stockColor = "#16a34a"; // Green
-
-if (product.quantity_in_stock <= 0) {
-
-    stockColor = "#dc2626"; // Red
-
-}
-else if (product.quantity_in_stock <= 5) {
-
-    stockColor = "#f59e0b"; // Orange
-
-}
-
-       card.innerHTML = `
-    <div class="img-wrapper">
-        <img src="${imageUrl}" alt="${product.item_name}" class="product-img">
-    </div>
-
-    <h3>${product.item_name}</h3>
-
-    <p>
-        <strong>Barcode:</strong>
-        ${product.barcode}
-    </p>
-
-    <p>
-        <strong>Category:</strong>
-        ${product.category_name || "Unassigned"}
-    </p>
-
-    <p>
-        <strong>Price:</strong>
-        R ${Number(product.price).toFixed(2)}
-    </p>
-
-   <p>
-
-    <strong>Stock:</strong>
-
-    <span
-        style="
-            color:${stockColor};
-            font-weight:bold;
-        "
-    >
-
-        ${product.quantity_in_stock}
-
-    </span>
-
-</p>  
-`;
-
-        // ✅ FIX: attach click INSIDE loop
-        const img = card.querySelector(".product-img");
-
-        img.addEventListener("click", () => {
-            openImageModal(imageUrl, product.item_name);
-        });
-
-        container.appendChild(card);
-    });
-}
-
 // =========================
-// FILTER FUNCTION
+// FILTER CATEGORY
 // =========================
 function filterCategory(categoryName) {
 
     if (categoryName === "ALL") {
-       renderCards(allProducts);
+
+        renderCards(allProducts);
+
         return;
+
     }
 
-    const filtered = allProducts.filter(product =>
-        product.category_name === categoryName
-    );
+    const filtered =
+        allProducts.filter(product =>
+
+            product.category_name === categoryName
+
+        );
 
     renderCards(filtered);
+
 }
 
 // =========================
-// BUTTON EVENTS
+// RENDER PRODUCT CARDS
 // =========================
+function renderCards(products) {
 
-function openImageModal(imageUrl, title) {
+    const container =
+        document.getElementById("inventory-grid");
 
-    let modal = document.getElementById("image-modal");
+    container.innerHTML = "";
 
-    if (!modal) {
-        modal = document.createElement("div");
-        modal.id = "image-modal";
-        modal.innerHTML = `
-            <div class="modal-backdrop"></div>
-            <div class="modal-content">
-                <img id="modal-img" src="" alt="">
-                <p id="modal-title"></p>
-            </div>
+    if (products.length === 0) {
+
+        container.innerHTML = `
+            <p>No products found.</p>
         `;
-        document.body.appendChild(modal);
 
-        modal.querySelector(".modal-backdrop").addEventListener("click", () => {
-            modal.style.display = "none";
-        });
+        return;
+
     }
 
-    document.getElementById("modal-img").src = imageUrl;
-    document.getElementById("modal-title").textContent = title;
+    products.forEach(product => {
 
-    modal.style.display = "flex";
+        const card =
+            document.createElement("div");
+
+        card.classList.add("product-card");
+
+        const imageUrl = product.image_url
+            ? `${API_BASE_URL}${product.image_url}`
+            : "./logoimage/noimageavilable.jpeg";
+
+        let stockColor = "#16a34a";
+
+        if (product.quantity_in_stock <= 0) {
+
+            stockColor = "#dc2626";
+
+        }
+
+        else if (product.quantity_in_stock <= 5) {
+
+            stockColor = "#f59e0b";
+
+        }
+
+   card.innerHTML = `
+    <div class="img-wrapper">
+        <img
+            src="${imageUrl}"
+            alt="${product.item_name}"
+            class="product-img">
+    </div>
+
+    <h3 class="product-title">
+        ${product.item_name}
+    </h3>
+
+    <div class="product-details">
+
+        <p>
+            <span class="detail-label">Barcode:</span>
+            <span class="detail-value">${product.barcode}</span>
+        </p>
+
+        <p>
+            <span class="detail-label">Category:</span>
+            <span class="detail-value">
+                ${product.category_name || "Unassigned"}
+            </span>
+        </p>
+
+        <p>
+            <span class="detail-label">Price:</span>
+            <span class="detail-value">
+                R ${Number(product.price).toFixed(2)}
+            </span>
+        </p>
+
+       <p>
+    <span class="detail-label">Stock:</span>
+    <span
+        class="detail-value"
+        style="color:${stockColor}; font-weight:600;">
+        ${product.quantity_in_stock}
+    </span>
+</p>
+
+    </div>
+`;
+
+        card.querySelector(".product-img")
+            .addEventListener("click", () => {
+
+                openImageModal(
+                    imageUrl,
+                    product.item_name
+                );
+
+            });
+
+        container.appendChild(card);
+
+    });
+
 }
 
 // =========================
-// CLOSE INVENTORY
+// IMAGE MODAL
 // =========================
-const closeBtn = document.getElementById("closeInventoryBtn");
+function openImageModal(imageUrl, title) {
 
+    let modal =
+        document.getElementById("image-modal");
+
+    if (!modal) {
+
+        modal =
+            document.createElement("div");
+
+        modal.id = "image-modal";
+
+        modal.innerHTML = `
+
+            <div class="modal-backdrop"></div>
+
+            <div class="modal-content">
+
+                <img
+                    id="modal-img"
+                    src=""
+                    alt="">
+
+                <p id="modal-title"></p>
+
+            </div>
+
+        `;
+
+        document.body.appendChild(modal);
+
+        modal
+            .querySelector(".modal-backdrop")
+            .addEventListener("click", () => {
+
+                modal.style.display = "none";
+
+            });
+
+    }
+
+    document.getElementById("modal-img").src =
+        imageUrl;
+
+    document.getElementById("modal-title").textContent =
+        title;
+
+    modal.style.display = "flex";
+
+}
+
+// =========================
+// CLOSE PAGE
+// =========================
 closeBtn.addEventListener("click", () => {
+
     window.location.href = "index.html";
+
 });

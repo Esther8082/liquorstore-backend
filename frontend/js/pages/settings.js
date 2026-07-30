@@ -1,133 +1,312 @@
 import {
-
     getSettings,
-    updateSettings, 
+    updateSettings,
     sendTestEmail
-
 } from "../api/settings.api.js";
 
-// =========================
-// ELEMENTS
-// =========================
+/* ============================================
+   ELEMENTS
+============================================ */
 
-const managerEmail =
-document.getElementById("manager-email");
+const senderEmail = document.getElementById("sender-email");
+const brevoApiKey = document.getElementById("brevo-api-key");
+const managerEmail = document.getElementById("manager-email");
+const reportTime = document.getElementById("report-time");
+const dailyReports = document.getElementById("daily-reports-enabled");
 
-const dailyReports =
-document.getElementById("daily-reports-enabled");
+const saveButton = document.getElementById("save-settings-btn");
+const testEmailBtn = document.getElementById("test-email-btn");
 
-const reportTime =
-document.getElementById("report-time");
+const emailTestSection =
+document.getElementById("email-test-section");
 
-const saveButton =
-document.getElementById("save-settings-btn");
+const successSection =
+document.getElementById("email-success-section");
 
-const testEmailBtn =
-document.getElementById("test-email-btn");
-// =========================
-// LOAD SETTINGS
-// =========================
+const summaryEmail =
+document.getElementById("summary-email");
 
-async function loadSettings() {
+const summaryTime =
+document.getElementById("summary-time");
 
-    try {
+const progressTest =
+document.getElementById("progress-test");
+
+const progressComplete =
+document.getElementById("progress-complete");
+
+/* ============================================
+   EMAIL VALIDATION
+============================================ */
+
+function isValidEmail(email){
+
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+}
+
+/* ============================================
+   NOTIFICATION
+============================================ */
+
+function showNotification(message, type = "success"){
+
+    const notification =
+    document.getElementById("notification");
+
+    const text =
+    document.getElementById("notification-message");
+
+    notification.className =
+    `notification ${type}`;
+
+    text.textContent = message;
+
+    notification.classList.remove("hidden");
+
+    setTimeout(() => {
+
+        notification.classList.add("hidden");
+
+    }, 5000);
+
+}
+
+/* ============================================
+   LOAD SETTINGS
+============================================ */
+
+async function loadSettings(){
+
+    try{
 
         const settings =
         await getSettings();
 
+        senderEmail.value =
+        settings.sender_email || "";
+
+        brevoApiKey.value =
+        settings.brevo_api_key || "";
+
         managerEmail.value =
         settings.manager_email || "";
+
+        reportTime.value =
+        settings.report_time || "21:00";
 
         dailyReports.checked =
         settings.daily_reports_enabled;
 
-        reportTime.value =
-        settings.report_time;
+        if(settings.sender_email && settings.brevo_api_key){
+
+            emailTestSection.classList.remove("hidden");
+
+            progressTest.classList.add("active");
+
+        }
 
     }
 
-    catch (error) {
+    catch(error){
 
         console.error(error);
 
-        alert(error.message);
+        showNotification(
+            error.message,
+            "error"
+        );
 
     }
 
 }
 
-// =========================
-// SAVE SETTINGS
-// =========================
+/* ============================================
+   SAVE SETTINGS
+============================================ */
 
-saveButton.addEventListener("click", async () => {
+saveButton.addEventListener(
 
-    try {
+    "click",
 
-        await updateSettings({
+    async () => {
 
-            manager_email:
-            managerEmail.value.trim(),
+        /* -----------------------------
+           VALIDATION
+        ------------------------------ */
 
-            daily_reports_enabled:
-            dailyReports.checked,
+        if(!isValidEmail(senderEmail.value.trim())){
 
-            report_time:
-            reportTime.value
+            showNotification(
+                "Please enter a valid Sender Email.",
+                "error"
+            );
 
-        });
+            senderEmail.focus();
 
-        alert("Settings saved successfully.");
+            return;
+
+        }
+
+        if(!brevoApiKey.value.trim()){
+
+            showNotification(
+                "Please enter your Brevo API Key.",
+                "error"
+            );
+
+            brevoApiKey.focus();
+
+            return;
+
+        }
+
+        if(!isValidEmail(managerEmail.value.trim())){
+
+            showNotification(
+                "Please enter a valid Manager Email.",
+                "error"
+            );
+
+            managerEmail.focus();
+
+            return;
+
+        }
+
+        try{
+
+            saveButton.disabled = true;
+
+            saveButton.textContent =
+            "Saving...";
+
+            await updateSettings({
+
+                sender_email:
+                senderEmail.value.trim(),
+
+                brevo_api_key:
+                brevoApiKey.value.trim(),
+
+                manager_email:
+                managerEmail.value.trim(),
+
+                report_time:
+                reportTime.value,
+
+                daily_reports_enabled:
+                dailyReports.checked
+
+            });
+
+            emailTestSection.classList.remove("hidden");
+
+            progressTest.classList.add("active");
+
+            emailTestSection.scrollIntoView({
+
+                behavior:"smooth"
+
+            });
+
+            showNotification(
+                "Configuration saved successfully."
+            );
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            showNotification(
+                error.message,
+                "error"
+            );
+
+        }
+
+        finally{
+
+            saveButton.disabled = false;
+
+            saveButton.textContent =
+            "💾 Save Configuration";
+
+        }
 
     }
 
-    catch (error) {
+);
 
-        console.error(error);
+/* ============================================
+   TEST EMAIL
+============================================ */
 
-        alert(error.message);
+testEmailBtn.addEventListener(
 
-    }
+    "click",
 
-});
+    async () => {
 
-testEmailBtn.addEventListener("click", async () => {
+        try{
 
-    try {
+            testEmailBtn.disabled = true;
 
-        testEmailBtn.disabled = true;
-
-        testEmailBtn.textContent =
+            testEmailBtn.textContent =
             "Sending...";
 
-        const result =
+            const result =
             await sendTestEmail();
 
-        alert(result.message);
+            successSection.classList.remove("hidden");
 
-    }
+            progressComplete.classList.add("active");
+            progressComplete.classList.add("complete");
 
-    catch (error) {
+            summaryEmail.textContent =
+            managerEmail.value;
 
-        console.error(error);
+            summaryTime.textContent =
+            reportTime.value;
 
-        alert(error.message);
+            successSection.scrollIntoView({
 
-    }
+                behavior:"smooth"
 
-    finally {
+            });
 
-        testEmailBtn.disabled = false;
+            showNotification(result.message);
 
-        testEmailBtn.textContent =
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            showNotification(
+                error.message,
+                "error"
+            );
+
+        }
+
+        finally{
+
+            testEmailBtn.disabled = false;
+
+            testEmailBtn.textContent =
             "📧 Send Test Email";
 
+        }
+
     }
 
-});
+);
 
-// =========================
-// INITIAL LOAD
-// =========================
+/* ============================================
+   INITIAL LOAD
+============================================ */
 
 loadSettings();

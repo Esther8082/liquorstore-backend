@@ -89,3 +89,14 @@ function renderTable(items) {
         tbody.appendChild(row);
     });
 }
+
+// =========================
+// CLOSE BUTTON
+// =========================
+const closeBtn = document.getElementById("closeLowStockBtn");
+
+if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+        window.location.href = "../index.html";
+    });
+}

@@ -16,28 +16,35 @@
 
 <header class="page-header">
 
-    <div>
-
+    <div class="header-left">
         <h1>Sales Reports</h1>
-
         <p class="report-subtitle">
             View sales performance and transaction history
         </p>
-
     </div>
 
-    <div class="filters">
+    <div class="header-right">
 
-        <button class="filter-btn active" data-filter="today">
-            Today
-        </button>
+        <div class="filters">
 
-        <button class="filter-btn" data-filter="week">
-            This Week
-        </button>
+            <button class="filter-btn active" data-filter="today">
+                Today
+            </button>
 
-        <button class="filter-btn" data-filter="month">
-            This Month
+            <button class="filter-btn" data-filter="week">
+                This Week
+            </button>
+
+            <button class="filter-btn" data-filter="month">
+                This Month
+            </button>
+
+        </div>
+
+        <button
+            id="closeReportsBtn"
+            class="close-btn">
+            Close
         </button>
 
     </div>

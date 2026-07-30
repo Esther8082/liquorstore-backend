@@ -121,6 +121,15 @@ const cancelEditBtn =
 
 async function loadCustomers() {
 
+    customersBody.innerHTML = `
+<tr>
+    <td colspan="5" class="loading-cell">
+        <div class="spinner"></div>
+        <span>Loading customers...</span>
+    </td>
+</tr>
+`;
+
     try {
 
         const response =
@@ -147,7 +156,19 @@ async function loadCustomers() {
 function renderCustomers(list) {
 
     customersBody.innerHTML = "";
+ 
+    if (list.length === 0) {
 
+        customersBody.innerHTML = `
+        <tr>
+            <td colspan="5">
+                No customers found.
+            </td>
+        </tr>
+        `;
+
+        return;
+    }
     list.forEach(customer => {
 
         const row =
@@ -555,6 +576,16 @@ saveEditBtn.addEventListener("click", async () => {
 
 });
 
+// =========================
+// CLOSE PAGE
+// =========================
+const closeCustomersBtn = document.getElementById("closeCustomersBtn");
+
+if (closeCustomersBtn) {
+    closeCustomersBtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+}
 // ==========================================
 // INITIAL LOAD
 // ==========================================

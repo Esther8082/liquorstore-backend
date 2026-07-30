@@ -1,5 +1,13 @@
 
 const checkoutBtn = document.getElementById("checkout-btn");
+const contextMenu =
+document.getElementById("context-menu");
+
+const deleteItemBtn =
+document.getElementById("delete-item-btn");
+
+let selectedCartIndex = null;
+
 
 if (checkoutBtn) {
     checkoutBtn.addEventListener("click", () => {

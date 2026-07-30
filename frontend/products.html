@@ -10,87 +10,154 @@
 
 <body>
 
+    <!-- =========================
+         TOP BAR
+    ========================== -->
+    <header class="topbar">
+
+        <button id="menu-btn" class="menu-btn">
+            ☰
+        </button>
+
+        <div class="brand">
+            <span>Products</span>
+        </div>
+
+    </header>
+
+    <!-- =========================
+         PAGE LAYOUT
+    ========================== -->
     <div class="products-container">
 
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+        <aside id="sidebar" class="sidebar">
+
             <h2>Categories</h2>
-            <!-- HOME BUTTON -->
-    <li>
-        <a href="index.html" class="home-btn">🏠 Home</a>
-    </li>
 
-</ul>
+            <ul class="sidebar-menu">
 
-<!-- PRODUCT CATEGORIES -->
-<ul id="categoryList"></ul>
+                <li>
+                    <a href="index.html" class="home-btn">
+                        🏠 Home
+                    </a>
+                </li>
+
+            </ul>
+
+            <!-- Categories loaded by JavaScript -->
+            <ul id="categoryList"></ul>
 
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
         <main class="main-content">
 
-            <!-- TOP BAR -->
+            <!-- SEARCH -->
             <div class="top-bar">
-                <input type="text" id="searchInput" placeholder="Search products...">
-                <button id="backBtn">Back</button>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search products...">
+
+                <button id="backBtn">
+                    Back
+                </button>
+
             </div>
 
             <!-- PRODUCTS TABLE -->
             <div class="table-container">
+
                 <table>
+
                     <thead>
+
                         <tr>
+
                             <th>Barcode</th>
                             <th>Product</th>
                             <th>Category</th>
                             <th>Size</th>
                             <th>Price</th>
                             <th>Stock</th>
-                    
+
                         </tr>
+
                     </thead>
 
-                    <tbody id="productsTableBody"></tbody>
+                    <tbody id="productsTableBody">
+
+                        <!-- Products rendered by JavaScript -->
+
+                    </tbody>
+
                 </table>
+
             </div>
 
         </main>
 
     </div>
 
-    <!-- FLOATING CART -->
+    <!-- =========================
+         FLOATING CART
+    ========================== -->
     <div id="cart" class="cart">
 
-        <!-- DRAG HANDLE -->
-       <div id="cart-header" class="cart-header">
+        <div id="cart-header" class="cart-header">
 
-    <h3>Cart</h3>
+            <h3>Cart</h3>
 
-    <button id="clear-cart-btn" class="clear-cart-btn">
-        Clear
-    </button>
+            <button
+                id="clear-cart-btn"
+                class="clear-cart-btn">
 
-</div>
-        <!-- CART TABLE -->
+                Clear
+
+            </button>
+
+        </div>
+
         <table>
+
             <thead>
+
                 <tr>
+
                     <th>Item</th>
                     <th>Qty</th>
                     <th>Total</th>
+
                 </tr>
+
             </thead>
 
-            <tbody id="cart-body"></tbody>
+            <tbody id="cart-body">
+
+                <!-- Cart items rendered by JavaScript -->
+
+            </tbody>
+
         </table>
 
-        <!-- CHECKOUT BUTTON -->
-        <button id="checkout-btn">Checkout</button>
+        <button id="checkout-btn">
+
+            Checkout
+
+        </button>
 
     </div>
 
-    <!-- SCRIPT -->
+    
+    <!-- =========================
+         SCRIPT
+    ========================== -->
     <script type="module" src="js/pages/products.js"></script>
 
 </body>

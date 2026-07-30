@@ -15,79 +15,227 @@
 
 <body>
 
+<div id="notification" class="notification hidden">
+
+    <span id="notification-message"></span>
+
+</div>
+
 <div class="page">
 
-    <!-- =========================
-         PAGE HEADER
-    ========================== -->
+    <!-- ========================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ========================================= -->
 
     <div class="page-header">
 
-        <div>
+        <h1>Settings</h1>
 
-            <h1>Settings</h1>
+        <p class="page-subtitle">
 
-            <p class="page-subtitle">
+            Configure your LiquorStore POS
 
-                Configure your LiquorStore POS
+        </p>
 
-            </p>
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- PROGRESS -->
+    <!-- ========================================= -->
+
+    <div class="wizard-progress">
+
+        <div class="progress-line"></div>
+
+        <div class="progress-step active">
+
+            <div class="circle">1</div>
+
+            <span>Create Account</span>
+
+        </div>
+
+        <div class="progress-step active">
+
+            <div class="circle">2</div>
+
+            <span>Configuration</span>
+
+        </div>
+
+        <div class="progress-step" id="progress-test">
+
+            <div class="circle">3</div>
+
+            <span>Test Email</span>
+
+        </div>
+
+        <div class="progress-step" id="progress-complete">
+
+            <div class="circle">✓</div>
+
+            <span>Complete</span>
 
         </div>
 
     </div>
 
-    <!-- =========================
-         DAILY REPORT SETTINGS
-    ========================== -->
+
+    <!-- ========================================= -->
+    <!-- STEP 1 -->
+    <!-- ========================================= -->
 
     <div class="settings-card">
 
-        <h2>📊 Daily Sales Reports</h2>
+        <div class="step-header">
+
+            <div class="step-badge">STEP 1</div>
+
+            <h2>Create Your Brevo Account</h2>
+
+        </div>
 
         <p class="section-description">
 
-            Automatically email the daily sales report to the store manager.
+            LiquorStore POS uses <strong>Brevo</strong> to automatically email
+            daily sales reports.
 
         </p>
 
+        <ol class="setup-list">
+
+            <li>Create a free Brevo account.</li>
+
+            <li>Verify your email address.</li>
+
+            <li>Create a Sender Email.</li>
+
+            <li>Generate an API Key.</li>
+
+        </ol>
+
+        <a
+
+            href="https://app.brevo.com"
+
+            target="_blank"
+
+            class="secondary-btn">
+
+            Open Brevo
+
+        </a>
+
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- STEP 2 -->
+    <!-- ========================================= -->
+
+    <div class="settings-card">
+
+        <div class="step-header">
+
+            <div class="step-badge">STEP 2</div>
+
+            <h2>Configure LiquorStore POS</h2>
+
+        </div>
+
+        <p class="section-description">
+
+            Enter the information from your Brevo account.
+
+        </p>
+
+
         <div class="form-group">
 
-            <label for="manager-email">
+            <label>
 
-                Manager Email Address
+                Sender Email
 
             </label>
 
             <input
-                id="manager-email"
+
+                id="sender-email"
+
                 type="email"
+
+                placeholder="store@example.com">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+
+                Brevo API Key
+
+            </label>
+
+            <input
+
+                id="brevo-api-key"
+
+                type="password"
+
+                placeholder="xkeysib-...">
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+
+                Manager Report Email
+
+            </label>
+
+            <input
+
+                id="manager-email"
+
+                type="email"
+
                 placeholder="manager@example.com">
 
         </div>
 
+
         <div class="form-group">
 
-            <label for="report-time">
+            <label>
 
                 Daily Report Time
 
             </label>
 
             <input
+
                 id="report-time"
-                type="time"
-                value="21:00">
+
+                type="time">
 
         </div>
+
 
         <div class="checkbox-group">
 
             <input
+
                 id="daily-reports-enabled"
+
                 type="checkbox">
 
-            <label for="daily-reports-enabled">
+            <label>
 
                 Enable Automatic Daily Reports
 
@@ -95,35 +243,124 @@
 
         </div>
 
-        <div class="button-group">
 
-            <button
-                id="save-settings-btn"
-                class="primary-btn">
+        <button
 
-                💾 Save Settings
+            id="save-settings-btn"
 
-            </button>
+            class="primary-btn">
 
-            <button
-                id="test-email-btn"
-                class="secondary-btn">
+            💾 Save Configuration
 
-                📧 Send Test Email
+        </button>
 
-            </button>
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- STEP 3 -->
+    <!-- ========================================= -->
+
+    <div
+
+        id="email-test-section"
+
+        class="settings-card hidden">
+
+        <div class="step-header">
+
+            <div class="step-badge">STEP 3</div>
+
+            <h2>Send Test Email</h2>
+
+        </div>
+
+        <p class="section-description">
+
+            Your configuration has been saved successfully.
+
+            Send yourself a test email before enabling reports.
+
+        </p>
+
+        <button
+
+            id="test-email-btn"
+
+            class="secondary-btn">
+
+            📧 Send Test Email
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ========================================= -->
+    <!-- STEP 4 -->
+    <!-- ========================================= -->
+
+    <div
+
+        id="email-success-section"
+
+        class="settings-card success-card hidden">
+
+        <div class="step-header">
+
+            <div class="step-badge success">
+
+                ✓
+
+            </div>
+
+            <h2>Email Setup Complete</h2>
+
+        </div>
+
+        <p>
+
+            Your email configuration is working correctly.
+
+        </p>
+
+        <div class="summary-box">
+
+            <div>
+
+                <strong>Reports will be sent to</strong>
+
+                <p id="summary-email"></p>
+
+            </div>
+
+            <div>
+
+                <strong>Every day at</strong>
+
+                <p id="summary-time"></p>
+
+            </div>
 
         </div>
 
     </div>
 
-    <!-- =========================
-         FUTURE FEATURES
-    ========================== -->
+
+
+    <!-- ========================================= -->
+    <!-- FUTURE FEATURES -->
+    <!-- ========================================= -->
 
     <div class="settings-card disabled">
 
-        <h2>🏪 Business Information</h2>
+        <h2>
+
+            🏪 Business Information
+
+        </h2>
 
         <p>
 
@@ -133,9 +370,14 @@
 
     </div>
 
+
     <div class="settings-card disabled">
 
-        <h2>🧾 Receipt Settings</h2>
+        <h2>
+
+            🧾 Receipt Settings
+
+        </h2>
 
         <p>
 
@@ -145,9 +387,14 @@
 
     </div>
 
+
     <div class="settings-card disabled">
 
-        <h2>💾 Backup & Restore</h2>
+        <h2>
+
+            💾 Backup & Restore
+
+        </h2>
 
         <p>
 
@@ -163,4 +410,4 @@
 
 </body>
 
-</html>
+</html> 

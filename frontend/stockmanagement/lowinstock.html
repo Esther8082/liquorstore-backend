@@ -6,25 +6,46 @@
 
     <link rel="stylesheet" href="../css/lowinstock.css">
 </head>
- 
+
 <body>
 
-    <h1>Low Stock Items</h1>
+<div class="page">
+
+    <div class="page-header">
+
+        <button
+            id="closeLowStockBtn"
+            class="close-btn">
+            Close
+        </button>
+
+        <h1>Low Stock Items</h1>
+
+    </div>
 
     <table>
+
         <thead>
+
             <tr>
+
                 <th>Barcode</th>
                 <th>Product</th>
                 <th>Category</th>
                 <th>Stock</th>
                 <th>Status</th>
+
             </tr>
+
         </thead>
 
         <tbody id="lowStockTableBody"></tbody>
+
     </table>
 
-    <script type="module" src="../js/pages/lowinstock.js"></script>
+</div>
+
+<script type="module" src="../js/pages/lowinstock.js"></script>
+
 </body>
 </html>

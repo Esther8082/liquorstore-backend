@@ -428,8 +428,90 @@ body{
     transform:translateY(0);
 
 }
+/* =========================
+   CONTEXT MENU
+========================= */
 
+.context-menu{
 
+    position:fixed;
+
+    background:#ffffff;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+    min-width:170px;
+
+    z-index:9999;
+
+    overflow:hidden;
+
+}
+
+.context-menu.hidden{
+
+    display:none;
+
+}
+
+.context-menu button{
+
+    width:100%;
+
+    padding:12px 18px;
+
+    border:none;
+
+    background:white;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+}
+
+.context-menu button:hover{
+
+    background:#ef4444;
+
+    color:white;
+
+}
+
+.context-menu{
+    position:absolute;
+    background:#fff;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    box-shadow:0 8px 20px rgba(0,0,0,.15);
+    z-index:9999;
+    min-width:180px;
+}
+
+.context-menu.hidden{
+    display:none;
+}
+
+.context-menu button{
+    width:100%;
+    border:none;
+    background:none;
+    padding:12px 16px;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.context-menu button:hover{
+    background:#ef4444;
+    color:#fff;
+}
 /* ==========================================
    CHECKOUT WRAPPER
 ========================================== */

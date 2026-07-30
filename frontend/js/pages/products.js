@@ -11,6 +11,9 @@ const categoryList = document.getElementById("categoryList");
 const tbody = document.getElementById("productsTableBody");
 const searchInput = document.getElementById("searchInput");
 
+const menuBtn = document.getElementById("menu-btn");
+const sidebar = document.getElementById("sidebar");
+
 const cartBox = document.getElementById("cart");
 const cartHeader = document.getElementById("cart-header");
 const cartBody = document.getElementById("cart-body");
@@ -18,6 +21,14 @@ const cartBody = document.getElementById("cart-body");
 const checkoutBtn = document.getElementById("checkout-btn");
 const backBtn = document.getElementById("backBtn");
 const clearCartBtn = document.getElementById("clear-cart-btn");
+
+const contextMenu =
+document.getElementById("context-menu");
+
+const deleteItemBtn =
+document.getElementById("delete-item-btn");
+
+let selectedBarcode = null;
 
 // =========================
 // STATE (PRODUCT PAGE CART)
@@ -40,6 +51,8 @@ function saveCart() {
 init();
 
 async function init() {
+
+     setupSidebar();
     await loadProducts();
     await loadCategories();
 
@@ -47,17 +60,40 @@ async function init() {
     renderCart();
 }
 
+
+// =========================
+// SIDEBAR
+// =========================
+
+function setupSidebar() {
+
+    if (!menuBtn || !sidebar) return;
+
+    menuBtn.addEventListener("click", () => {
+
+        sidebar.classList.toggle("active");
+
+    });
+
+}
+
 // =========================
 // LOAD PRODUCTS
 // =========================
 async function loadProducts() {
     try {
-        tbody.innerHTML = `<tr><td colspan="7">Loading products...</td></tr>`;
-        products = await fetchProducts();
+       tbody.innerHTML = `
+<tr>
+    <td colspan="6" class="loading-cell">
+        <div class="spinner"></div>
+        <span>Loading products...</span>
+    </td>
+</tr>
+`;       products = await fetchProducts();
         renderProducts(products);
     } catch (error) {
         console.error("Failed to load products:", error);
-        tbody.innerHTML = `<tr><td colspan="7">Failed to load products</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6">Failed to load products</td></tr>`;
     }
 }
 

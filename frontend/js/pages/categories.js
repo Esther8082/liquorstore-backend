@@ -40,41 +40,74 @@ const productCount =
 
 let selectedCategoryId = null;
 
-    async function loadCategories() {
+   async function loadCategories() {
 
-    const response =
-        await fetch(`${API_BASE_URL}/categories`);
+    tableBody.innerHTML = `
+    <tr>
+        <td colspan="3" class="loading-cell">
+            <div class="spinner"></div>
+            <span>Loading categories...</span>
+        </td>
+    </tr>
+    `;
 
-    const categories =
-        await response.json();
+    try {
 
-    tableBody.innerHTML = "";
+        const response =
+            await fetch(`${API_BASE_URL}/categories`);
 
-    categories.forEach(category => {
+        const categories =
+            await response.json();
 
-        tableBody.innerHTML += `
+        tableBody.innerHTML = "";
 
-       <tr
-    class="category-row"
-    data-id="${category.category_id}"
-    data-name="${category.category_name}">
+        if (categories.length === 0) {
 
-    <td>${category.category_id}</td>
+            tableBody.innerHTML = `
+            <tr>
+                <td colspan="3">
+                    No categories found.
+                </td>
+            </tr>
+            `;
 
-    <td>${category.category_name}</td>
+            return;
+        }
 
-    <td>${category.product_count}</td>
+        categories.forEach(category => {
 
-</tr>
+            tableBody.innerHTML += `
+            <tr
+                class="category-row"
+                data-id="${category.category_id}"
+                data-name="${category.category_name}">
 
+                <td>${category.category_id}</td>
+                <td>${category.category_name}</td>
+                <td>${category.product_count}</td>
+
+            </tr>
+            `;
+
+        });
+
+        addRowEvents();
+
+    } catch (error) {
+
+        console.error(error);
+
+        tableBody.innerHTML = `
+        <tr>
+            <td colspan="3">
+                Failed to load categories.
+            </td>
+        </tr>
         `;
 
-    });
-
-    addRowEvents();
+    }
 
 }
-
 loadCategories();
 
 function addRowEvents() {

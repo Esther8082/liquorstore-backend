@@ -5,56 +5,81 @@
     <meta charset="UTF-8">
     <title>Inventory</title>
 
-<link rel="stylesheet" href="./css/inventory.css">
-
+    <link rel="stylesheet" href="./css/inventory.css">
 </head>
 
 <body>
 
-<div class="inventory-container">
+    <!-- TOP BAR -->
+    <header class="topbar">
 
-    <!-- SIDEBAR -->
-<aside class="sidebar">
+        <button id="menu-btn">☰</button>
 
-    <h2>Inventory</h2>
+        <div class="brand">
+            <span>Inventory</span>
+        </div>
 
-   <ul class="sidebar-menu" id="category-list">
-</ul>
+    </header>
 
-</aside>
+    <div class="inventory-container">
 
-    <!-- MAIN -->
-    <main class="main-content">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
 
-        <!-- SEARCH -->
-       <div class="top-bar">
+            <h2>Inventory</h2>
 
-    <div class="search-box">
-        <span class="search-icon">🔍</span>
+            <ul class="sidebar-menu">
 
-        <input 
-            type="text" 
-            id="inventory-search" 
-            placeholder="Search product, barcode or category..."
-        >
+                <li>
+                    <a href="index.html" class="home-btn">
+                        🏠 Home
+                    </a>
+                </li>
+
+            </ul>
+
+            <ul id="category-list"></ul>
+
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+
+            <!-- SEARCH -->
+            <div class="top-bar">
+
+                <div class="search-box">
+
+                    <span class="search-icon">🔍</span>
+
+                    <input
+                        type="text"
+                        id="inventory-search"
+                        placeholder="Search product, barcode or category..."
+                    >
+
+                </div>
+
+                <button
+                    id="closeInventoryBtn"
+                    class="close-btn"
+                >
+                    Close
+                </button>
+
+            </div>
+
+            <!-- INVENTORY CARDS -->
+            <div
+                id="inventory-grid"
+                class="inventory-grid"
+            ></div>
+
+        </main>
+
     </div>
 
-    <button id="closeInventoryBtn" class="close-btn">
-        Close
-    </button>
-
-</div>
-
-        
-
-<!-- CARDS CONTAINER -->
-<div id="inventory-grid" class="inventory-grid"></div>
-
-    </main>
-
-</div>
-
-<script src="./js/pages/inventory.js"></script>
+    <script src="./js/pages/inventory.js"></script>
 
 </body>
 

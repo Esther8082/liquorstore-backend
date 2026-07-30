@@ -335,6 +335,16 @@ filterButtons.forEach(button => {
 
 });
 
+// =========================
+// CLOSE BUTTON
+// =========================
+const closeBtn = document.getElementById("closeReportsBtn");
+
+if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+}
 
 // ===========================
 // INITIAL LOAD

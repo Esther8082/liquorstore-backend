@@ -4,11 +4,12 @@
          <meta charset="UTF-8"> 
          <title>Liquor Store POS</title> 
          <link rel="stylesheet" href="css/styles.css">
-         </head>
+     </head>
 
+     <main></main>
 <body> 
 
-<main>
+
 
     <!-- TOP BAR -->
       <header class="topbar">
@@ -47,7 +48,16 @@
                                 <li><a href="stockmanagement/lowinstock.html">Low In Stock</a></li> 
         
                             </ul> </li> 
-                            <li><a href="reports.html">Reports</a></li> </ul> 
+                            <li><a href="reports.html">Reports</a></li> 
+                        
+                        <li>
+    <a href="settings.html">
+        Settings
+    </a>
+</li>
+                        
+                        </ul> 
+
     </div>
 
 <div class="sales-header">
@@ -95,6 +105,12 @@
         </table> 
     </div> 
 
+    <div id="context-menu" class="context-menu hidden">
+    <button id="delete-item-btn">
+        🗑 Delete Item
+    </button>
+</div>
+
     <!-- ✅ CHECKOUT BUTTON BELOW TABLE -->
 <div class="checkout-wrapper">
     <button id="checkout-btn" class="checkout-btn">
@@ -102,10 +118,11 @@
     </button>
 </div>
 
-</main>
-
 <script src="js/app.js"></script>
 <script src="js/pages/index.js"></script>
-    
-    </body>  
-          </html>
+
+</body>
+
+</main>
+
+ 
