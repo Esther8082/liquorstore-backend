@@ -3,6 +3,7 @@ const express = require("express");
 const {
     createProduct,
     fetchAllProducts,
+    getProductByBarcode,
     updateProduct,
     deleteProduct,
     deleteProductImage
@@ -17,6 +18,9 @@ productsRouter.post("/", upload.single("image"), createProduct);
 
 // GET ALL PRODUCTS
 productsRouter.get("/", fetchAllProducts);
+
+// GET PRODUCT BY BARCODE
+productsRouter.get("/barcode/:barcode", getProductByBarcode);
 
 // UPDATE PRODUCT (STOCK ADJUSTMENT)
 productsRouter.put(

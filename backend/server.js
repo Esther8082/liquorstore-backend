@@ -1,5 +1,5 @@
 require("dotenv").config();
-require("./database"); // 👈 ADD THIS
+require("./database"); 
 
 const express = require("express");
 const cors = require("cors");
@@ -7,6 +7,11 @@ const path = require("path");
 
 const app = express();
 const SERVER_PORT = process.env.PORT || 5000;
+
+const {
+    startReportScheduler
+} = require("./src/services/reportScheduler");
+
 
 // ========================
 // MIDDLEWARE
@@ -56,6 +61,9 @@ app.use((err, req, res, next) => {
 // ========================
 // START SERVER
 // ========================
+
+startReportScheduler();
+
 app.listen(SERVER_PORT, () => {
     console.log(`Backend running on http://localhost:${SERVER_PORT}`);
 });

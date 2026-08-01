@@ -57,6 +57,45 @@ const updateSettings = async (req, res) => {
 
         } = req.body;
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(sender_email)) {
+
+    return res.status(400).json({
+
+        error: "Invalid sender email."
+
+    });
+
+}
+
+if (!emailRegex.test(manager_email)) {
+
+    return res.status(400).json({
+
+        error: "Invalid manager email."
+
+    });
+
+}
+
+const [hours, minutes] = report_time.split(":").map(Number);
+
+const totalMinutes = (hours * 60) + minutes;
+
+const earliest = (8 * 60) + 30;   // 08:30
+const latest = (17 * 60) + 30;    // 17:30
+
+if (totalMinutes < earliest || totalMinutes > latest) {
+
+    return res.status(400).json({
+
+        error: "Report time must be between 08:30 and 17:30."
+
+    });
+
+}
+
         const result = await databasePool.query(
 
             `

@@ -99,6 +99,42 @@ const fetchAllProducts = async (req, res) => {
     }
 };
 
+const getProductByBarcode = async (req, res) => {
+    try {
+
+        const { barcode } = req.params;
+
+        const result = await databasePool.query(
+            `
+            SELECT 
+                products.*,
+                categories.category_name
+            FROM products
+            LEFT JOIN categories
+            ON products.category_id = categories.category_id
+            WHERE products.barcode = $1
+            `,
+            [barcode]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({
+                error: "Product not found"
+            });
+        }
+
+        res.status(200).json(result.rows[0]);
+
+    } catch (databaseError) {
+
+        console.error("FETCH PRODUCT BY BARCODE ERROR:", databaseError);
+
+        res.status(500).json({
+            error: databaseError.message
+        });
+    }
+};
+
 const updateProduct = async (req, res) => {
     try {
 
@@ -219,6 +255,7 @@ const deleteProductImage = async (req, res) => {
 module.exports = {
     createProduct,
     fetchAllProducts,
+    getProductByBarcode,
     updateProduct,
     deleteProduct,
     deleteProductImage
