@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedIndex = null;
 
+    let barcodeBuffer = "";
+let barcodeTimer = null;
+
     // =========================
     // ELEMENTS
     // =========================
@@ -109,6 +112,123 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     renderSalesTable();
+
+
+
+    async function handleBarcodeScan(barcode) {
+
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/products/barcode/${barcode}`
+        );
+
+        if (!response.ok) {
+            alert("Product not found.");
+            return;
+        }
+
+        const product = await response.json();
+
+        addScannedProduct(product);
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
+function addScannedProduct(product) {
+
+    const existing = sales.find(
+        item => item.barcode === product.barcode
+    );
+
+    if (existing) {
+
+        if (existing.quantity >= product.quantity_in_stock) {
+
+            alert(`Only ${product.quantity_in_stock} in stock.`);
+
+            return;
+
+        }
+
+        existing.quantity++;
+        existing.total = existing.quantity * existing.price;
+
+    } else {
+
+        sales.push({
+
+            product_id: product.product_id,
+            barcode: product.barcode,
+            item_name: product.item_name,
+            price: Number(product.price),
+            quantity: 1,
+            total: Number(product.price)
+
+        });
+
+    }
+
+    localStorage.setItem(
+        "checkoutCart",
+        JSON.stringify(sales)
+    );
+
+    renderSalesTable();
+
+}
+
+document.addEventListener("keydown", (e) => {
+
+    // =========================
+    // BARCODE SCANNER
+    // =========================
+
+    // Stop scanner input from going into the page
+    if (e.key.length === 1 || e.key === "Enter") {
+        e.preventDefault();
+    }
+
+    // Scanner finished barcode
+    if (e.key === "Enter") {
+
+        if (barcodeBuffer.length > 0) {
+
+            console.log("SCANNED BARCODE:", barcodeBuffer);
+
+            handleBarcodeScan(barcodeBuffer);
+
+            barcodeBuffer = "";
+
+        }
+
+        clearTimeout(barcodeTimer);
+
+        return;
+    }
+
+    // Capture barcode numbers
+    if (e.key.length === 1) {
+
+        barcodeBuffer += e.key;
+
+    }
+
+    // Allow a little more time between scanner keys
+    clearTimeout(barcodeTimer);
+
+    barcodeTimer = setTimeout(() => {
+
+        barcodeBuffer = "";
+
+    }, 500);
+
+});
 
     // =========================
     // DELETE ITEM

@@ -1,4 +1,5 @@
 
+
 const checkoutBtn = document.getElementById("checkout-btn");
 const contextMenu =
 document.getElementById("context-menu");
@@ -30,3 +31,25 @@ document
     window.location.href = "products.html";
 
 });
+
+
+async function handleBarcodeScan(barcode) {
+
+    try {
+
+        const response = await fetch(`${API_BASE_URL}/products/barcode/${barcode}`);
+
+        if (!response.ok) {
+            alert("Product not found.");
+            return;
+        }
+
+        const product = await response.json();
+
+        addProductToCart(product);
+
+    } catch (err) {
+        console.error(err);
+    }
+
+}

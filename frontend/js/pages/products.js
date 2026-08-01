@@ -215,28 +215,14 @@ row.innerHTML = `
     });
 }
 
-// =========================
-// ADD TO CART
-// =========================
-tbody.addEventListener("click", (e) => {
-    const row = e.target.closest("tr");
-    if (!row) return;
+function addProductToCart(product) {
 
-    const barcode = row.dataset.barcode;
-    const product = products.find(
-        p => p.barcode.toString() === barcode
-    );
+    if (!product) return;
 
-if (!product) return;
-
-if (product.quantity_in_stock <= 0) {
-
-    alert(`${product.item_name} is out of stock.`);
-
-    return;
-
-}
-    
+    if (product.quantity_in_stock <= 0) {
+        alert(`${product.item_name} is out of stock.`);
+        return;
+    }
 
     const existing = cart.find(
         item => item.barcode === product.barcode
@@ -244,34 +230,47 @@ if (product.quantity_in_stock <= 0) {
 
     if (existing) {
 
-    if (existing.quantity >= product.quantity_in_stock) {
+        if (existing.quantity >= product.quantity_in_stock) {
+            alert(`Only ${product.quantity_in_stock} in stock.`);
+            return;
+        }
 
-        alert(`Only ${product.quantity_in_stock} in stock.`);
+        existing.quantity++;
+        existing.total = existing.quantity * existing.price;
 
-        return;
+    } else {
 
-    }
-
-    existing.quantity++;
-    existing.total = existing.quantity * existing.price;
-
-}
-    
-    else {
-        
-       cart.push({
-    product_id: product.product_id,
-    barcode: product.barcode,
-    item_name: product.item_name,
-    price: Number(product.price),
-    quantity: 1,
-    total: Number(product.price)
-});
+        cart.push({
+            product_id: product.product_id,
+            barcode: product.barcode,
+            item_name: product.item_name,
+            price: Number(product.price),
+            quantity: 1,
+            total: Number(product.price)
+        });
 
     }
 
     saveCart();
     renderCart();
+}
+
+// =========================
+// ADD TO CART
+// =========================
+tbody.addEventListener("click", (e) => {
+
+    const row = e.target.closest("tr");
+    if (!row) return;
+
+    const barcode = row.dataset.barcode;
+
+    const product = products.find(
+        p => p.barcode.toString() === barcode
+    );
+
+    addProductToCart(product);
+
 });
 
 // =========================
@@ -462,3 +461,102 @@ if (cartBox && cartHeader) {
         isDragging = false;
     });
 }
+
+// =========================
+// BARCODE SCANNER
+// =========================
+
+let barcodeBuffer = "";
+let barcodeTimeout = null;
+
+document.addEventListener("keydown", (e) => {
+
+    // =====================================
+    // IF SEARCH BOX IS ACTIVE
+    // =====================================
+
+    if (e.target === searchInput) {
+
+        // Let the scanner type normally
+        // into the search box.
+        //
+        // Your existing searchInput "input"
+        // listener will find the product.
+
+        return;
+    }
+
+
+    // =====================================
+    // SCANNING ANYWHERE ELSE ON PAGE
+    // =====================================
+
+    // Prevent barcode characters from being
+    // typed into the webpage/body.
+    if (e.key.length === 1 || e.key === "Enter") {
+        e.preventDefault();
+    }
+
+
+    // =====================================
+    // SCANNER FINISHED
+    // =====================================
+
+    if (e.key === "Enter") {
+
+        if (barcodeBuffer.length > 0) {
+
+            console.log(
+                "SCANNED BARCODE:",
+                barcodeBuffer
+            );
+
+            const product = products.find(
+                p => String(p.barcode) === barcodeBuffer
+            );
+
+            if (product) {
+
+                addProductToCart(product);
+
+            } else {
+
+                alert(
+                    `Product with barcode ${barcodeBuffer} not found.`
+                );
+
+            }
+
+            barcodeBuffer = "";
+        }
+
+        clearTimeout(barcodeTimeout);
+
+        return;
+    }
+
+
+    // =====================================
+    // CAPTURE BARCODE
+    // =====================================
+
+    if (e.key.length === 1) {
+
+        barcodeBuffer += e.key;
+
+    }
+
+
+    // =====================================
+    // RESET BUFFER
+    // =====================================
+
+    clearTimeout(barcodeTimeout);
+
+    barcodeTimeout = setTimeout(() => {
+
+        barcodeBuffer = "";
+
+    }, 500);
+
+});
