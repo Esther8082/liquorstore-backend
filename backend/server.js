@@ -27,6 +27,21 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.get("/debug-image", (req, res) => {
+    const filename = "1786112069349-hansa750ml.jpg";
+
+    const imagePath = path.join(
+        __dirname,
+        "uploads",
+        "productimages",
+        filename
+    );
+
+    res.json({
+        path: imagePath,
+        exists: fs.existsSync(imagePath)
+    });
+});
 
 console.log(
     "UPLOADS DIRECTORY:",
