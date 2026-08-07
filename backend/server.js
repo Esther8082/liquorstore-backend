@@ -4,6 +4,8 @@ require("./database");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
+
 
 const app = express();
 const SERVER_PORT = process.env.PORT || 5000;
@@ -25,6 +27,23 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+
+console.log(
+    "UPLOADS DIRECTORY:",
+    path.join(__dirname, "uploads")
+);
+
+console.log(
+    "PRODUCT IMAGES DIRECTORY EXISTS:",
+    fs.existsSync(path.join(__dirname, "uploads/productimages"))
+);
+
+if (fs.existsSync(path.join(__dirname, "uploads/productimages"))) {
+    console.log(
+        "PRODUCT IMAGE FILES:",
+        fs.readdirSync(path.join(__dirname, "uploads/productimages"))
+    );
+}
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

@@ -113,22 +113,25 @@ RETURNING sale_id
                 `
                 INSERT INTO sale_items
                 (
-                    sale_id,
-                    product_id,
-                    quantity,
-                    selling_price,
-                    line_total
+            sale_id,
+        product_id,
+        item_name,
+        quantity,
+        selling_price,
+        line_total
+    
+
                 )
                 VALUES
                 (
-                    $1,$2,$3,$4,$5
+                    $1,$2,$3,$4,$5,$6
                 )
                 `,
 
                 [
                     saleId,
                     item.product_id,
-                    item.quantity,
+                     item.item_name,                    item.quantity,
                     item.selling_price,
                     item.line_total
                 ]
@@ -240,22 +243,20 @@ const getSaleById = async (req, res) => {
         // Sale Items
         // -------------------------
         const itemsResult = await databasePool.query(
-
-            `
-            SELECT
-                si.product_id,
-                p.item_name,
-                si.quantity,
-                si.selling_price,
-                si.line_total
-            FROM sale_items si
-            JOIN products p
-                ON si.product_id = p.product_id
-            WHERE si.sale_id = $1
-            `,
-            [id]
-
-        );
+    `
+    SELECT
+        si.product_id,
+        COALESCE(si.item_name, p.item_name) AS item_name,
+        si.quantity,
+        si.selling_price,
+        si.line_total
+    FROM sale_items si
+    LEFT JOIN products p
+        ON si.product_id = p.product_id
+    WHERE si.sale_id = $1
+    `,
+    [id]
+);
 
         const sale = saleResult.rows[0];
 
