@@ -23,11 +23,9 @@ async function loadProducts() {
             const row = document.createElement("tr");
             row.dataset.id = p.product_id;
 
-            // FIX: remove localhost dependency
-            const imageUrl = p.image_url
-                ? `${API_BASE_URL}${p.image_url}`
-                : "https://placehold.co/100x100?text=No+Image";
 
+           const imageUrl = p.image_url || "https://placehold.co/100x100?text=No+Image";
+    
             row.innerHTML = `
                 <td>
                     <input value="${p.item_name}" data-id="${p.product_id}" class="name-input">
@@ -130,10 +128,21 @@ saveBtn.addEventListener("click", async () => {
             formData.append("image", imageInput.files[0]);
         }
 
-        await fetch(`${API_BASE_URL}/products/${id}`, {
-            method: "PUT",
-            body: formData
-        });
+       const res = await fetch(`${API_BASE_URL}/products/${id}`, {
+    method: "PUT",
+    body: formData
+});
+
+const data = await res.json();
+
+if (!res.ok) {
+    console.error("UPDATE PRODUCT ERROR:", data);
+    alert(
+        data.error ||
+        `Failed to update product ${id}`
+    );
+    return;
+}
     }
 
     alert("Only changed rows saved!");
@@ -184,15 +193,29 @@ document.addEventListener("click", () => {
 // DELETE PRODUCT (FIXED BUG HERE)
 // =========================
 deleteRowOption.addEventListener("click", async () => {
-
     const confirmDelete = confirm("Are you sure you want to delete this product?");
     if (!confirmDelete) return;
 
-    await fetch(`${API_BASE_URL}/products/${selectedProductId}`, {
-        method: "DELETE"
-    });
+    try {
+        const res = await fetch(`${API_BASE_URL}/products/${selectedProductId}`, {
+            method: "DELETE"
+        });
 
-    loadProducts();
+        const data = await res.json();
+
+        if (!res.ok) {
+            console.error("DELETE PRODUCT ERROR:", data);
+            alert(data.error || data.details || "Failed to delete product.");
+            return;
+        }
+
+        alert("Product deleted successfully.");
+        loadProducts();
+
+    } catch (error) {
+        console.error("DELETE PRODUCT NETWORK ERROR:", error);
+        alert("Could not connect to the server.");
+    }
 });
 
 // =========================
