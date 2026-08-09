@@ -50,17 +50,20 @@ async function loadInventory() {
 
     try {
 
-        const res = await fetch(`${API_BASE_URL}/products`);
+        const res =
+            await fetch(`${API_BASE_URL}/products`);
 
-        allProducts = await res.json();
+        allProducts =
+            await res.json();
 
         renderCards(allProducts);
 
-    }
+    } catch (error) {
 
-    catch (error) {
-
-        console.error("INVENTORY LOAD ERROR:", error);
+        console.error(
+            "INVENTORY LOAD ERROR:",
+            error
+        );
 
     }
 
@@ -76,15 +79,17 @@ async function loadCategories() {
         const response =
             await fetch(`${API_BASE_URL}/categories`);
 
-        categories = await response.json();
+        categories =
+            await response.json();
 
         renderCategories();
 
-    }
+    } catch (error) {
 
-    catch (error) {
-
-        console.error("CATEGORY LOAD ERROR:", error);
+        console.error(
+            "CATEGORY LOAD ERROR:",
+            error
+        );
 
     }
 
@@ -100,7 +105,10 @@ function renderCategories() {
 
     list.innerHTML = "";
 
+    // =========================
     // ALL PRODUCTS
+    // =========================
+
     const allItem =
         document.createElement("li");
 
@@ -124,7 +132,10 @@ function renderCategories() {
 
     list.appendChild(allItem);
 
+    // =========================
     // DATABASE CATEGORIES
+    // =========================
+
     categories.forEach(category => {
 
         const li =
@@ -162,7 +173,9 @@ function setActiveButton(button) {
 
     document
         .querySelectorAll(".sidebar-btn")
-        .forEach(btn => btn.classList.remove("active"));
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
 
     button.classList.add("active");
 
@@ -174,16 +187,27 @@ function setActiveButton(button) {
 searchInput.addEventListener("input", () => {
 
     const searchTerm =
-        searchInput.value.trim().toLowerCase();
+        searchInput.value
+            .trim()
+            .toLowerCase();
 
     const filtered =
         allProducts.filter(product =>
 
-            product.item_name?.toLowerCase().includes(searchTerm) ||
+            product.item_name
+                ?.toLowerCase()
+                .includes(searchTerm)
 
-            String(product.barcode).includes(searchTerm) ||
+            ||
 
-            product.category_name?.toLowerCase().includes(searchTerm)
+            String(product.barcode)
+                .includes(searchTerm)
+
+            ||
+
+            product.category_name
+                ?.toLowerCase()
+                .includes(searchTerm)
 
         );
 
@@ -206,9 +230,7 @@ function filterCategory(categoryName) {
 
     const filtered =
         allProducts.filter(product =>
-
             product.category_name === categoryName
-
         );
 
     renderCards(filtered);
@@ -242,9 +264,17 @@ function renderCards(products) {
 
         card.classList.add("product-card");
 
-        const imageUrl = product.image_url
-            ? `${API_BASE_URL}${product.image_url}`
-            : "./logoimage/noimageavilable.jpeg";
+        // =========================
+        // CLOUDINARY IMAGE
+        // =========================
+
+        const imageUrl =
+            product.image_url ||
+            "./logoimage/noimageavilable.jpeg";
+
+        // =========================
+        // STOCK COLOR
+        // =========================
 
         let stockColor = "#16a34a";
 
@@ -252,68 +282,99 @@ function renderCards(products) {
 
             stockColor = "#dc2626";
 
-        }
-
-        else if (product.quantity_in_stock <= 5) {
+        } else if (product.quantity_in_stock <= 5) {
 
             stockColor = "#f59e0b";
 
         }
 
-   card.innerHTML = `
-    <div class="img-wrapper">
-        <img
-            src="${imageUrl}"
-            alt="${product.item_name}"
-            class="product-img">
-    </div>
+        // =========================
+        // CARD HTML
+        // =========================
 
-    <h3 class="product-title">
-        ${product.item_name}
-    </h3>
+        card.innerHTML = `
 
-    <div class="product-details">
+            <div class="product-image-container">
 
-        <p>
-            <span class="detail-label">Barcode:</span>
-            <span class="detail-value">${product.barcode}</span>
-        </p>
+                <img
+                    src="${imageUrl}"
+                    alt="${product.item_name}"
+                    class="product-img"
+                >
 
-        <p>
-            <span class="detail-label">Category:</span>
-            <span class="detail-value">
-                ${product.category_name || "Unassigned"}
-            </span>
-        </p>
+            </div>
 
-        <p>
-            <span class="detail-label">Price:</span>
-            <span class="detail-value">
-                R ${Number(product.price).toFixed(2)}
-            </span>
-        </p>
+            <h3 class="product-title">
+                ${product.item_name}
+            </h3>
 
-       <p>
-    <span class="detail-label">Stock:</span>
-    <span
-        class="detail-value"
-        style="color:${stockColor}; font-weight:600;">
-        ${product.quantity_in_stock}
-    </span>
-</p>
+            <div class="product-details">
 
-    </div>
-`;
+                <p>
+                    <span class="detail-label">
+                        Barcode:
+                    </span>
 
-        card.querySelector(".product-img")
-            .addEventListener("click", () => {
+                    <span class="detail-value">
+                        ${product.barcode}
+                    </span>
+                </p>
 
-                openImageModal(
-                    imageUrl,
-                    product.item_name
-                );
+                <p>
+                    <span class="detail-label">
+                        Category:
+                    </span>
 
-            });
+                    <span class="detail-value">
+                        ${product.category_name || "Unassigned"}
+                    </span>
+                </p>
+
+                <p>
+                    <span class="detail-label">
+                        Price:
+                    </span>
+
+                    <span class="detail-value">
+                        R ${Number(product.price).toFixed(2)}
+                    </span>
+                </p>
+
+                <p>
+                    <span class="detail-label">
+                        Stock:
+                    </span>
+
+                    <span
+                        class="detail-value"
+                        style="
+                            color: ${stockColor};
+                            font-weight: 600;
+                        "
+                    >
+                        ${product.quantity_in_stock}
+                    </span>
+                </p>
+
+            </div>
+
+        `;
+
+        // =========================
+        // IMAGE MODAL
+        // =========================
+
+        const image =
+            card.querySelector(".product-img");
+
+        image.addEventListener("click", () => {
+
+            openImageModal(
+                imageUrl,
+                product.item_name
+            );
+
+        });
 
         container.appendChild(card);
 
@@ -345,7 +406,8 @@ function openImageModal(imageUrl, title) {
                 <img
                     id="modal-img"
                     src=""
-                    alt="">
+                    alt=""
+                >
 
                 <p id="modal-title"></p>
 
@@ -368,8 +430,8 @@ function openImageModal(imageUrl, title) {
     document.getElementById("modal-img").src =
         imageUrl;
 
-    document.getElementById("modal-title").textContent =
-        title;
+    document.getElementById("modal-title")
+        .textContent = title;
 
     modal.style.display = "flex";
 
