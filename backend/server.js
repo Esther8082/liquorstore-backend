@@ -1,11 +1,8 @@
 require("dotenv").config();
-require("./database"); 
+require("./database");
 
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-const fs = require("fs");
-
 
 const app = express();
 const SERVER_PORT = process.env.PORT || 5000;
@@ -13,7 +10,6 @@ const SERVER_PORT = process.env.PORT || 5000;
 const {
     startReportScheduler
 } = require("./src/services/reportScheduler");
-
 
 // ========================
 // MIDDLEWARE
@@ -27,50 +23,17 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.get("/debug-image", (req, res) => {
-    const filename = "1786112069349-hansa750ml.jpg";
-
-    const imagePath = path.join(
-        __dirname,
-        "uploads",
-        "productimages",
-        filename
-    );
-
-    res.json({
-        path: imagePath,
-        exists: fs.existsSync(imagePath)
-    });
-});
-
-console.log(
-    "UPLOADS DIRECTORY:",
-    path.join(__dirname, "uploads")
-);
-
-console.log(
-    "PRODUCT IMAGES DIRECTORY EXISTS:",
-    fs.existsSync(path.join(__dirname, "uploads/productimages"))
-);
-
-if (fs.existsSync(path.join(__dirname, "uploads/productimages"))) {
-    console.log(
-        "PRODUCT IMAGE FILES:",
-        fs.readdirSync(path.join(__dirname, "uploads/productimages"))
-    );
-}
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ========================
 // ROUTES
 // ========================
+
 const productsRouter = require("./src/routes/products.routes");
 const categoriesRoutes = require("./src/routes/categories.routes");
 const salesRoutes = require("./src/routes/sales.route");
-const customersRoutes =require("./src/routes/customers.routes");
-const reportsRoutes =require("./src/routes/reports.routes");
-const settingsRoutes =require("./src/routes/settings.routes");
+const customersRoutes = require("./src/routes/customers.routes");
+const reportsRoutes = require("./src/routes/reports.routes");
+const settingsRoutes = require("./src/routes/settings.routes");
 
 app.get("/", (req, res) => {
     res.send("LIQUOR STORE POS Backend Running");
@@ -84,12 +47,15 @@ app.use("/reports", reportsRoutes);
 app.use("/settings", settingsRoutes);
 
 // ========================
-// ERROR HANDLER (ADD HERE)
+// ERROR HANDLER
 // ========================
 
 app.use((err, req, res, next) => {
     console.error("SERVER ERROR:", err.message);
-    res.status(500).json({ error: "Internal server error" });
+
+    res.status(500).json({
+        error: "Internal server error"
+    });
 });
 
 // ========================

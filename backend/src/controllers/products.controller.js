@@ -1,4 +1,24 @@
 const databasePool = require("../config/database");
+const cloudinary = require("../config/cloudinary");
+
+const uploadToCloudinary = (fileBuffer) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            {
+                folder: "liquorstore/products"
+            },
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+
+        uploadStream.end(fileBuffer);
+    });
+};
 
 const createProduct = async (req, res) => {
     try {
@@ -23,11 +43,12 @@ const createProduct = async (req, res) => {
             });
         }
 
-         let image_url = null;
+       let image_url = null;
 
-        if (req.file) {
-            image_url = `/uploads/productimages/${req.file.filename}`;  }
-
+if (req.file) {
+    const uploadedImage = await uploadToCloudinary(req.file.buffer);
+    image_url = uploadedImage.secure_url;
+}
 
         const createdProduct = await databasePool.query(
             `INSERT INTO products
@@ -148,13 +169,12 @@ const updateProduct = async (req, res) => {
             category_id,
             barcode
         } = req.body;
-
-        let image_url = null;
+let image_url = null;
 
 if (req.file) {
-    image_url = `/uploads/productimages/${req.file.filename}`;
+    const uploadedImage = await uploadToCloudinary(req.file.buffer);
+    image_url = uploadedImage.secure_url;
 }
-
 
         const updated = await databasePool.query(
             `UPDATE products
