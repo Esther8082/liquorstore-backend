@@ -1,5 +1,9 @@
 # Liquor Store Web POS
 
+## 🚀 Live Demo
+
+**[Open the Liquor Store POS](https://maloinneatinghouse.netlify.app/)**
+
 A full-stack web-based Point-of-Sale (POS) and inventory management system designed to support the day-to-day operations of a liquor retail business.
 
 The system provides a centralized platform for managing products, inventory, customers, sales, payments, reports, and stock adjustments while supporting barcode-based product lookup and thermal receipt printing.
