@@ -154,6 +154,43 @@ liquor-store-pos/
 │
 └── README.md
 ```
+## Screenshots
+
+### Point of Sale
+
+The main POS interface allows products to be added to the current sale, quantities to be managed, and the total sale amount to be calculated.
+
+![Point of Sale](screenshots/mainpage.png)
+
+### Product Management
+
+The product interface displays product images, categories, barcodes, prices, stock levels, and cart functionality.
+
+![Product Management](screenshots/product.png)
+
+### Inventory Management
+
+The inventory interface allows products and stock levels to be monitored while providing product search functionality.
+
+![Inventory Management](screenshots/inventory.png)
+
+### Sales Reports
+
+The reporting interface provides sales performance information, transaction history, payment breakdowns, and sales statistics.
+
+![Sales Reports](screenshots/report.png)
+
+### Checkout & Payment
+
+The checkout interface supports customer selection, order summaries, multiple payment methods, cash received, and automatic change calculation.
+
+![Checkout and Payment](screenshots/checkout.png)
+
+### Thermal Receipt
+
+Completed transactions can be printed as a compact thermal receipt containing transaction details, purchased items, payment information, and change.
+
+![Thermal Receipt](screenshots/receipt.png)
 
 ## Key Workflow
 
