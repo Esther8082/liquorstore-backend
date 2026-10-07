@@ -1,165 +1,341 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Liquor Store POS</title>
 
     <link rel="stylesheet" href="css/products.css">
 </head>
 
 <body>
 
-    <!-- =========================
+    <!-- =====================================================
          TOP BAR
-    ========================== -->
+    ====================================================== -->
+
     <header class="topbar">
 
-        <button id="menu-btn" class="menu-btn">
+        <button
+            id="menu-btn"
+            class="menu-btn"
+            type="button"
+        >
             ☰
         </button>
 
         <div class="brand">
-            <span>Products</span>
+            <span>Liquor Store POS</span>
         </div>
 
     </header>
 
-    <!-- =========================
-         PAGE LAYOUT
-    ========================== -->
-    <div class="products-container">
 
-        <!-- =========================
-             SIDEBAR
-        ========================== -->
-        <aside id="sidebar" class="sidebar">
+    <!-- =====================================================
+         MAIN PRODUCTS LAYOUT
+    ====================================================== -->
 
-            <h2>Categories</h2>
+    <div class="products-layout">
+
+
+        <!-- =================================================
+             HAMBURGER SIDE PANEL
+        ================================================== -->
+
+        <aside
+            id="sidebar"
+            class="sidebar"
+        >
+
+            <h2>Menu</h2>
+
 
             <ul class="sidebar-menu">
 
+                <!-- POS / PRODUCTS -->
                 <li>
-                    <a href="index.html" class="home-btn">
-                        🏠 Home
+                    <a
+                        href="products.html"
+                        class="home-btn"
+                    >
+                        POS
+                    </a>
+                </li>
+
+
+                <!-- INVENTORY -->
+                <li>
+                    <a href="inventory.html">
+                        Inventory
+                    </a>
+                </li>
+
+
+                <!-- CUSTOMERS -->
+                <li>
+                    <a href="customers.html">
+                        Customers
+                    </a>
+                </li>
+
+
+                <!-- STOCK MANAGEMENT -->
+                <li class="dropdown">
+
+                    <div
+                        class="dropdown-btn"
+                        id="stock-btn"
+                    >
+
+                        <span>
+                            Stock Management
+                        </span>
+
+                        <span class="arrow">
+                            ▼
+                        </span>
+
+                    </div>
+
+
+                    <ul
+                        class="submenu"
+                        id="stock-menu"
+                    >
+
+                        <li>
+                            <a href="stockmanagement/addproduct.html">
+                                Add Product
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="stockmanagement/stockadjustments.html">
+                                Stock Adjustments
+                            </a>
+                        </li>
+
+
+                        <li>
+                            <a href="stockmanagement/lowinstock.html">
+                                Low In Stock
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+
+                <!-- REPORTS -->
+                <li>
+                    <a href="reports.html">
+                     Reports
+                    </a>
+                </li>
+
+
+                <!-- SETTINGS -->
+                <li>
+                    <a href="settings.html">
+                         Settings
                     </a>
                 </li>
 
             </ul>
 
-            <!-- Categories loaded by JavaScript -->
-            <ul id="categoryList"></ul>
-
         </aside>
 
-        <!-- =========================
-             MAIN CONTENT
-        ========================== -->
-        <main class="main-content">
 
-            <!-- SEARCH -->
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main
+            id="main-content"
+            class="main-content"
+        >
+
+
+            <!-- =============================================
+                 SEARCH
+            ============================================== -->
+
             <div class="top-bar">
 
                 <input
                     type="text"
                     id="searchInput"
-                    placeholder="Search products...">
+                    placeholder="Search product or barcode..."
+                    autocomplete="off"
+                >
 
-                <button id="backBtn">
-                    Back
+            </div>
+
+
+            <!-- =============================================
+                 PRODUCT CATEGORIES
+            ============================================== -->
+
+            <div
+                id="categoryBar"
+                class="category-bar"
+            >
+
+                <button
+                    type="button"
+                    class="category-btn active"
+                    data-category="ALL"
+                >
+                    All Products
+                </button>
+
+                <!--
+                    JavaScript will add the remaining
+                    categories here.
+                -->
+
+            </div>
+
+
+            <!-- =============================================
+                 PRODUCTS
+            ============================================== -->
+
+            <div
+                id="productsGrid"
+                class="products-grid"
+            ></div>
+
+
+        </main>
+
+
+        <!-- =================================================
+             CART RESIZER
+        ================================================== -->
+
+        <div
+            id="cart-resizer"
+            class="cart-resizer"
+        ></div>
+
+
+        <!-- =================================================
+             CART
+        ================================================== -->
+
+        <aside
+            id="cart"
+            class="cart-panel"
+        >
+
+
+            <!-- CART HEADER -->
+
+            <div
+                id="cart-header"
+                class="cart-header"
+            >
+
+                <div>
+
+                    <h3>
+                        Current Sale
+                    </h3>
+
+                    <span class="cart-subtitle">
+                        Items selected for checkout
+                    </span>
+
+                </div>
+
+
+                <button
+                    id="clear-cart-btn"
+                    class="clear-cart-btn"
+                    type="button"
+                >
+                    Clear
                 </button>
 
             </div>
 
-            <!-- PRODUCTS TABLE -->
-            <div class="table-container">
 
-                <table>
+            <!-- CART CONTENT -->
 
-                    <thead>
+            <div class="cart-content">
 
-                        <tr>
+                <div class="cart-table-wrapper">
 
-                            <th>Barcode</th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Size</th>
-                            <th>Price</th>
-                            <th>Stock</th>
+                    <table class="cart-table">
 
-                        </tr>
+                        <thead>
 
-                    </thead>
+                            <tr>
 
-                    <tbody id="productsTableBody">
+                                <th>
+                                    Item
+                                </th>
 
-                        <!-- Products rendered by JavaScript -->
+                                <th>
+                                    Qty
+                                </th>
 
-                    </tbody>
+                                <th>
+                                    Total
+                                </th>
 
-                </table>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="cart-body">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
-        </main>
+
+            <!-- CART FOOTER -->
+
+           <div class="cart-footer">
+
+    <div class="cart-total">
+        <span>Total</span>
+        <strong id="cart-total">R 0.00</strong>
+    </div>
+
+    <button id="checkout-btn" class="checkout-btn" type="button">
+        Checkout
+    </button>
+
+</div>
+
+        </aside>
 
     </div>
 
-    <!-- =========================
-         FLOATING CART
-    ========================== -->
-    <div id="cart" class="cart">
 
-        <div id="cart-header" class="cart-header">
+    <!-- =====================================================
+         PRODUCTS JAVASCRIPT
+    ====================================================== -->
 
-            <h3>Cart</h3>
-
-            <button
-                id="clear-cart-btn"
-                class="clear-cart-btn">
-
-                Clear
-
-            </button>
-
-        </div>
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Total</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="cart-body">
-
-                <!-- Cart items rendered by JavaScript -->
-
-            </tbody>
-
-        </table>
-
-        <button id="checkout-btn">
-
-            Checkout
-
-        </button>
-
-    </div>
-
-    
-    <!-- =========================
-         SCRIPT
-    ========================== -->
-    <script type="module" src="js/pages/products.js"></script>
+    <script
+        type="module"
+        src="js/pages/products.js"
+    ></script>
 
 </body>
 
 </html>
+
