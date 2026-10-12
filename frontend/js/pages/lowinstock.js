@@ -97,6 +97,6 @@ const closeBtn = document.getElementById("closeLowStockBtn");
 
 if (closeBtn) {
     closeBtn.addEventListener("click", () => {
-        window.location.href = "../index.html";
+        window.location.href = "../products.html";
     });
 }

@@ -243,34 +243,53 @@ body {
 }
 
 /* =========================
-   CLOSE BUTTON
+CLOSE BUTTON
 ========================= */
 
-.close-btn{
+.close-btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
 
-    background:#ef4444;
+padding: 10px 18px;
 
-    color:white;
+background: #ffffff;
+color: #475569;
 
-    border:none;
+border: 1px solid #e2e8f0;
+border-radius: 10px;
 
-    border-radius:10px;
+font-size: 14px;
+font-weight: 600;
 
-    padding:11px 20px;
+cursor: pointer;
 
-    cursor:pointer;
+box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
 
-    font-weight:600;
-
-    transition:.2s;
+transition: all 0.2s ease;
 
 }
 
-.close-btn:hover{
+.close-btn:hover {
+background: #fef2f2;
+color: #dc2626;
+border-color: #fecaca;
 
-    background:#dc2626;
+
+box-shadow: 0 4px 10px rgba(220, 38, 38, 0.08);
 
 }
+
+.close-btn:active {
+transform: scale(0.97);
+}
+
+.close-btn:focus-visible {
+outline: 3px solid rgba(37, 99, 235, 0.25);
+outline-offset: 2px;
+}
+
 
 /* =========================
    PRODUCT GRID

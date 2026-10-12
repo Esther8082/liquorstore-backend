@@ -442,6 +442,6 @@ function openImageModal(imageUrl, title) {
 // =========================
 closeBtn.addEventListener("click", () => {
 
-    window.location.href = "index.html";
+    window.location.href = "products.html";
 
 });

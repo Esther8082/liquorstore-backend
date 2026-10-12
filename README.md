@@ -148,8 +148,7 @@ liquor-store-pos/
 │   ├── logoimage/
 │   ├── stockmanagement/
 │   ├── checkout.html
-│   ├── customers.html
-│   ├── index.html
+│   ├── customers.html 
 │   ├── inventory.html
 │   ├── products.html
 │   ├── reports.html

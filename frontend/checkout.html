@@ -2,35 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
     <link rel="stylesheet" href="css/checkout.css">
 </head>
 
-<body></body>
+<body>
+
 <main class="checkout-container">
+
+    <!-- BACK TO POS -->
+    <button
+        id="back-to-pos-btn"
+        class="back-to-pos-btn"
+        type="button"
+    >
+         Cancel
+    </button>
+
     <div class="checkout-grid">
 
         <!-- LEFT -->
         <div class="payment-panel">
 
-              <div class="customer-section">
+            <div class="customer-section">
 
                 <h3>Customer</h3>
 
                 <input
                     id="customer-search"
                     type="text"
-                    placeholder="Walk-in Customer (search account customer)...">
+                    placeholder="Walk-in Customer (search account customer)..."
+                >
 
                 <div
                     id="customer-results"
-                    class="customer-results">
-                </div>
+                    class="customer-results"
+                ></div>
 
             </div>
 
             <hr>
-            
+
             <div class="total-section">
                 <p>Total Amount</p>
                 <h2 id="total-amount">R 0.00</h2>
@@ -38,108 +51,133 @@
 
             <hr>
 
-           <div class="payment-section">
+            <div class="payment-section">
 
-    <h3>Payment Method</h3>
+                <h3>Payment Method</h3>
 
-    <div class="payment-options">
+                <div class="payment-options">
 
-        <label>
-            <input type="radio"
-                   name="payment"
-                   value="cash"
-                   checked>
-            Cash
-        </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="cash"
+                            checked
+                        >
+                        Cash
+                    </label>
 
-        <label>
-            <input type="radio"
-                   name="payment"
-                   value="card">
-            Card
-        </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="card"
+                        >
+                        Card
+                    </label>
 
-        <label>
-            <input type="radio"
-                   name="payment"
-                   value="split">
-            Split Payment
-        </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="split"
+                        >
+                        Split Payment
+                    </label>
 
-    </div>
+                </div>
 
-</div>
+            </div>
 
-<hr>
+            <hr>
 
-<!-- CASH -->
-<div id="cash-section">
+            <!-- CASH -->
+            <div id="cash-section">
 
-    <label for="amount-received">Amount Received</label>
+                <label for="amount-received">
+                    Amount Received
+                </label>
 
-   <input
-    id="amount-received"
-    type="text"
-    inputmode="decimal"
-    placeholder="Enter amount received">
-</div>
+                <input
+                    id="amount-received"
+                    type="text"
+                    inputmode="decimal"
+                    placeholder="Enter amount received"
+                >
 
-<!-- CARD -->
-<div id="card-section" style="display:none;">
+            </div>
 
-    <p class="card-message">
-        Customer is paying the full amount by card.
-    </p>
+            <!-- CARD -->
+            <div
+                id="card-section"
+                style="display:none;"
+            >
 
-</div>
+                <p class="card-message">
+                    Customer is paying the full amount by card.
+                </p>
 
-<!-- SPLIT -->
-<div id="split-section" style="display:none;">
+            </div>
 
-    <div class="payment-input">
-        <label for="cash-amount">Cash Amount</label>
+            <!-- SPLIT -->
+            <div
+                id="split-section"
+                style="display:none;"
+            >
 
-        <input
-            id="cash-amount"
-            type="text"
-            inputmode="decimal"
-            placeholder="Enter cash amount">
-    </div>
+                <div class="payment-input">
 
-    <div class="payment-input">
-        <label for="card-amount">Card Amount</label>
+                    <label for="cash-amount">
+                        Cash Amount
+                    </label>
 
-        <input
-            id="card-amount"
-            type="text"
-            inputmode="decimal"
-            placeholder="Enter card amount">
-    </div>
+                    <input
+                        id="cash-amount"
+                        type="text"
+                        inputmode="decimal"
+                        placeholder="Enter cash amount"
+                    >
 
-</div>
+                </div>
 
-<hr>
+                <div class="payment-input">
 
-<div class="change-section">
+                    <label for="card-amount">
+                        Card Amount
+                    </label>
 
-    <p>Change</p>
+                    <input
+                        id="card-amount"
+                        type="text"
+                        inputmode="decimal"
+                        placeholder="Enter card amount"
+                    >
 
-    <h2 id="change">R 0.00</h2>
+                </div>
 
-</div>
+            </div>
+
+            <hr>
+
+            <div class="change-section">
+
+                <p>Change</p>
+
+                <h2 id="change">
+                    R 0.00
+                </h2>
+
+            </div>
 
         </div>
 
         <!-- RIGHT -->
-
         <div class="summary-panel">
 
             <h3>Order Summary</h3>
 
             <div id="summary-list">
-
                 <!-- JS renders items -->
-
             </div>
 
         </div>
@@ -148,12 +186,18 @@
 
     <button
         id="print-btn"
-        class="print-btn">
-
+        class="print-btn"
+        type="button"
+    >
         🖨 Print Slip
-
     </button>
 
 </main>
 
-<script type="module" src="js/pages/checkout.js"></script>
+<script
+    type="module"
+    src="js/pages/checkout.js"
+></script>
+
+</body>
+</html>

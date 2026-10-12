@@ -586,7 +586,7 @@ const closeCustomersBtn = document.getElementById("closeCustomersBtn");
 
 if (closeCustomersBtn) {
     closeCustomersBtn.addEventListener("click", () => {
-        window.location.href = "index.html";
+        window.location.href = "products.html";
     });
 }
 

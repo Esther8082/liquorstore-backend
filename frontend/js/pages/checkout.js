@@ -27,6 +27,9 @@ const summaryList = document.getElementById("summary-list");
 
 const printBtn = document.getElementById("print-btn");
 
+const backToPosBtn =
+    document.getElementById("back-to-pos-btn");
+
 let customers = [];
 
 let selectedCustomer = {
@@ -181,6 +184,24 @@ document
 
 });
 
+// =========================
+// BACK TO POS
+// =========================
+
+if (backToPosBtn) {
+
+    backToPosBtn.addEventListener("click", () => {
+
+        // The current checkout is being cancelled.
+        // Remove it so it cannot appear in a future sale.
+        localStorage.removeItem("checkoutCart");
+
+        // Return to the main POS page.
+        window.location.href = "products.html";
+
+    });
+
+}
 
 // =========================
 // PRINT
@@ -294,7 +315,7 @@ await printReceipt(response.sale_id);
 
 localStorage.removeItem("checkoutCart");
 
-window.location.href = "index.html";
+window.location.href = "products.html";
 
 } catch (error) {
 

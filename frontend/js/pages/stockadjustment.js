@@ -241,7 +241,7 @@ const closeBtn = document.getElementById("closeStockAdjustmentBtn");
 closeBtn.addEventListener("click", () => {
 
     if (changedRows.size === 0) {
-        window.location.href = "../index.html";
+        window.location.href = "../products.html";
         return;
     }
 
@@ -250,6 +250,6 @@ closeBtn.addEventListener("click", () => {
     );
 
     if (confirmClose) {
-        window.location.href = "../index.html";
+        window.location.href = "../products.html";
     }
 });
