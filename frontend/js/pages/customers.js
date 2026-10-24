@@ -1059,7 +1059,7 @@ body {
 
     <div class="footer">
 
-        Liquor Store POS -
+        Mal Inn Eating House -
         Customer Statement
 
     </div>
