@@ -47,20 +47,65 @@ function setupSidebar() {
 // LOAD INVENTORY
 // =========================
 
+
 async function loadInventory() {
     try {
-        const result = await window.inventoryOffline.getInventoryProducts();
+        // Electron: use the local/offline inventory.
+        if (window.inventoryOffline &&
+            typeof window.inventoryOffline.getInventoryProducts === "function") {
 
-        allProducts = result.products;
+            const result =
+                await window.inventoryOffline.getInventoryProducts();
+
+            allProducts = Array.isArray(result)
+                ? result
+                : (result?.products || []);
+
+            console.log(
+                `Inventory loaded from ${result?.source || "Electron"}.`
+            );
+
+        } else {
+            // Browser / Netlify: load inventory from the online API.
+            const response = await fetch(`${API_BASE_URL}/products`);
+
+            if (!response.ok) {
+                throw new Error(
+                    `Products API returned status ${response.status}`
+                );
+            }
+
+            const data = await response.json();
+
+            // Support APIs that return either an array
+            // or an object containing a products array.
+            allProducts = Array.isArray(data)
+                ? data
+                : (data.products || []);
+
+            console.log(
+                `Inventory loaded from online API: ${allProducts.length} products.`
+            );
+        }
+
         renderCards(allProducts);
 
-        console.log(
-            `Inventory products loaded from ${result.source}.`
-        );
     } catch (error) {
         console.error("INVENTORY LOAD ERROR:", error);
+
+        const container = document.getElementById("inventory-grid");
+
+        if (container) {
+            container.innerHTML = `
+                <p class="inventory-error">
+                    Unable to load inventory. Please check your connection
+                    and try refreshing the page.
+                </p>
+            `;
+        }
     }
 }
+
 
 
 // =========================

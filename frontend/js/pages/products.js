@@ -52,6 +52,7 @@ async function init() {
     setupStockDropdown();
     setupCartDragging();
     setupCartResizer();
+    setupCartToggle();
 
     await loadProducts();
     await loadCategories();
@@ -899,6 +900,52 @@ function setupCartResizer() {
     );
 }
 
+function setupCartToggle() {
+    const layout = document.querySelector(".products-layout");
+    const toggleBtn = document.getElementById("cart-toggle-btn");
+    const cart = document.getElementById("cart");
+    const resizer = document.getElementById("cart-resizer");
+    const mainContent = document.getElementById("main-content");
+
+    if (!layout || !toggleBtn || !cart || !mainContent) {
+        console.error("Cart toggle: required elements were not found.");
+        return;
+    }
+
+    toggleBtn.addEventListener("click", () => {
+        const cartHidden = layout.classList.toggle("cart-hidden");
+
+        if (cartHidden) {
+            cart.style.display = "none";
+
+            if (resizer) {
+                resizer.style.display = "none";
+            }
+
+            mainContent.style.marginRight = "0";
+            mainContent.style.width = "100%";
+            toggleBtn.textContent = "<";
+            toggleBtn.title = "Open cart";
+            toggleBtn.setAttribute("aria-label", "Open cart");
+            toggleBtn.setAttribute("aria-expanded", "false");
+        } else {
+            cart.style.display = "flex";
+
+            if (resizer) {
+                resizer.style.display = "block";
+            }
+
+            const cartWidth = cart.offsetWidth || 320;
+            cart.style.width = `${cartWidth}px`;
+            mainContent.style.marginRight = `${cartWidth}px`;
+            mainContent.style.width = "";
+            toggleBtn.textContent = ">";
+            toggleBtn.title = "Close cart";
+            toggleBtn.setAttribute("aria-label", "Close cart");
+            toggleBtn.setAttribute("aria-expanded", "true");
+        }
+    });
+}
 // =========================================================
 // BARCODE SCANNER
 // =========================================================
