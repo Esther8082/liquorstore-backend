@@ -629,6 +629,39 @@ if (cartTotal) {
 });
 }
 
+
+/* =========================================================
+   CHECKOUT
+========================================================= */
+
+if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", () => {
+        if (cartItems.length === 0) {
+            alert("Your cart is empty. Please add products before checkout.");
+            return;
+        }
+
+        // 1. Transfer the cart items to Checkout.
+        localStorage.setItem(
+            "checkoutCart",
+            JSON.stringify(cartItems)
+        );
+
+        // 2. Clear the original cart.
+        cartItems = [];
+
+        // 3. Save the empty cart to localStorage.
+        saveCart();
+
+        // 4. Update the cart display immediately.
+        renderCart();
+
+        // 5. Navigate to the Checkout page.
+        window.location.href = "checkout.html";
+    });
+}
+
+
 // =========================================================
 // CLEAR CART
 // =========================================================

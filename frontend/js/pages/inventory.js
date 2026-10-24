@@ -46,54 +46,116 @@ function setupSidebar() {
 // =========================
 // LOAD INVENTORY
 // =========================
+
 async function loadInventory() {
-
     try {
+        const result = await window.inventoryOffline.getInventoryProducts();
 
-        const res =
-            await fetch(`${API_BASE_URL}/products`);
-
-        allProducts =
-            await res.json();
-
+        allProducts = result.products;
         renderCards(allProducts);
 
-    } catch (error) {
-
-        console.error(
-            "INVENTORY LOAD ERROR:",
-            error
+        console.log(
+            `Inventory products loaded from ${result.source}.`
         );
-
+    } catch (error) {
+        console.error("INVENTORY LOAD ERROR:", error);
     }
-
 }
+
 
 // =========================
 // LOAD CATEGORIES
 // =========================
+
 async function loadCategories() {
-
     try {
+        // First, try to get categories from the online API.
+        const response = await fetch(
+            `${API_BASE_URL}/categories`
+        );
 
-        const response =
-            await fetch(`${API_BASE_URL}/categories`);
+        if (!response.ok) {
+            throw new Error(
+                `Categories API returned status ${response.status}`
+            );
+        }
 
-        categories =
-            await response.json();
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error(
+                "The categories API did not return an array."
+            );
+        }
+
+        categories = data;
+
+        // Save the latest categories in the local SQLite database.
+        if (window.posDatabase) {
+            await window.posDatabase.saveCategories(data);
+            console.log(
+                "Categories saved to local database:",
+                data.length
+            );
+        }
 
         renderCategories();
 
     } catch (error) {
-
-        console.error(
-            "CATEGORY LOAD ERROR:",
-            error
+        console.warn(
+            "Unable to load online categories. Trying local cache:",
+            error.message
         );
 
-    }
+        try {
+            // Load previously saved categories when offline.
+            if (window.posDatabase) {
+                categories =
+                    await window.posDatabase.getCategories();
 
+                if (categories.length > 0) {
+                    console.log(
+                        "Categories loaded from local database:",
+                        categories.length
+                    );
+
+                    renderCategories();
+                    return;
+                }
+            }
+
+            // Last fallback: use category names from cached products.
+            const cachedProducts =
+                window.inventoryOffline
+                    ? await window.inventoryOffline.getInventoryProducts()
+                    : { products: [] };
+
+            const categoryNames = [
+                ...new Set(
+                    cachedProducts.products
+                        .map(product => product.category_name)
+                        .filter(Boolean)
+                )
+            ];
+
+            categories = categoryNames.map(category_name => ({
+                category_name
+            }));
+
+            renderCategories();
+
+        } catch (cacheError) {
+            console.error(
+                "CATEGORY LOAD ERROR:",
+                cacheError
+            );
+
+            categories = [];
+            renderCategories();
+        }
+    }
 }
+
 
 // =========================
 // RENDER SIDEBAR CATEGORIES
@@ -442,6 +504,6 @@ function openImageModal(imageUrl, title) {
 // =========================
 closeBtn.addEventListener("click", () => {
 
-    window.location.href = "products.html";
+    window.location.href = "index.html";
 
 });

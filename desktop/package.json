@@ -1,0 +1,19 @@
+{
+  "name": "liquor-store-pos",
+  "version": "1.0.0",
+  "description": "Liquor Store Point of Sale Desktop Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^44.7.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3"
+  }
+}

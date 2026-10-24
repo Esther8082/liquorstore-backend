@@ -785,38 +785,3 @@ PURCHASE HISTORY
     border-radius:8px;
 
 }
-
-/* =========================
-PAGE REFINEMENTS
-========================= */
-
-body {
-background: #f8fafc;
-color: #111827;
-}
-
-.page {
-max-width: 1200px;
-margin: 0 auto;
-}
-
-.search-section input {
-background: #ffffff;
-border-color: #e2e8f0;
-border-radius: 12px;
-box-shadow: 0 2px 6px rgba(15, 23, 42, .03);
-}
-
-.customers-table {
-border: 1px solid #e5e7eb;
-border-radius: 12px;
-box-shadow: 0 4px 16px rgba(15, 23, 42, .04);
-}
-
-.customers-table thead {
-background: #1f2937;
-}
-
-.customers-table tbody tr:last-child td {
-border-bottom: none;
-}

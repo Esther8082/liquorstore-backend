@@ -197,7 +197,7 @@ if (backToPosBtn) {
         localStorage.removeItem("checkoutCart");
 
         // Return to the main POS page.
-        window.location.href = "products.html";
+        window.location.href = "index.html";
 
     });
 
@@ -315,7 +315,7 @@ await printReceipt(response.sale_id);
 
 localStorage.removeItem("checkoutCart");
 
-window.location.href = "products.html";
+window.location.href = "index.html";
 
 } catch (error) {
 

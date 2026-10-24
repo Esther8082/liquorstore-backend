@@ -156,9 +156,9 @@ const getProductByBarcode = async (req, res) => {
     }
 };
 
+
 const updateProduct = async (req, res) => {
     try {
-
         const { id } = req.params;
 
         const {
@@ -169,37 +169,91 @@ const updateProduct = async (req, res) => {
             category_id,
             barcode
         } = req.body;
-let image_url = null;
 
-if (req.file) {
-    const uploadedImage = await uploadToCloudinary(req.file.buffer);
-    image_url = uploadedImage.secure_url;
-}
+        // Validate the product ID.
+        const productId = Number(id);
 
+        if (!Number.isInteger(productId) || productId <= 0) {
+            return res.status(400).json({
+                error: "Invalid product ID"
+            });
+        }
+
+        // Validate the required fields.
+        if (
+            !item_name?.trim() ||
+            !item_size?.trim() ||
+            quantity_in_stock === undefined ||
+            quantity_in_stock === "" ||
+            price === undefined ||
+            price === "" ||
+            !category_id
+        ) {
+            return res.status(400).json({
+                error: "Missing required product fields"
+            });
+        }
+
+        const stock = Number(quantity_in_stock);
+        const productPrice = Number(price);
+        const categoryId = Number(category_id);
+
+        if (
+            !Number.isFinite(stock) ||
+            stock < 0 ||
+            !Number.isFinite(productPrice) ||
+            productPrice < 0 ||
+            !Number.isInteger(categoryId) ||
+            categoryId <= 0
+        ) {
+            return res.status(400).json({
+                error: "Invalid stock, price, or category"
+            });
+        }
+
+        // Upload a new image only if one was selected.
+        let imageUrl = null;
+
+        if (req.file) {
+            const uploadedImage = await uploadToCloudinary(
+                req.file.buffer
+            );
+
+            imageUrl = uploadedImage.secure_url;
+        }
+
+        // Update the existing database row. Do not INSERT a new product.
         const updated = await databasePool.query(
             `UPDATE products
-            SET item_name = $1,
-    item_size = $2,
-    quantity_in_stock = $3,
-    price = $4,
-    category_id = $5,
-    barcode = $6,
-    image_url = COALESCE($8, image_url)
-WHERE product_id = $7
+             SET item_name = $1,
+                 item_size = $2,
+                 quantity_in_stock = $3,
+                 price = $4,
+                 category_id = $5,
+                 barcode = $6,
+                 image_url = COALESCE($8, image_url)
+             WHERE product_id = $7
              RETURNING *`,
             [
-                item_name,
-                item_size,
-                quantity_in_stock,
-                price,
-                category_id,
-                barcode,
-                id,
-                image_url
+                item_name.trim(),
+                item_size.trim(),
+                stock,
+                productPrice,
+                categoryId,
+                barcode?.trim() || null,
+                productId,
+                imageUrl
             ]
         );
 
-        res.status(200).json({
+        // Do not report success if no existing row was updated.
+        if (updated.rows.length === 0) {
+            return res.status(404).json({
+                error: "Product not found. No product was updated."
+            });
+        }
+
+        return res.status(200).json({
             message: "Product updated successfully",
             product: updated.rows[0]
         });
@@ -207,8 +261,15 @@ WHERE product_id = $7
     } catch (error) {
         console.error("UPDATE PRODUCT ERROR:", error);
 
-        res.status(500).json({
-            error: error.message
+        if (error.code === "23505") {
+            return res.status(409).json({
+                error: "A product with this barcode already exists."
+            });
+        }
+
+        return res.status(500).json({
+            error: "Failed to update product",
+            details: error.message
         });
     }
 };

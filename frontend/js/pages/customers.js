@@ -120,35 +120,85 @@ const cancelEditBtn =
 // LOAD CUSTOMERS
 // ==========================================
 
-async function loadCustomers() {
 
+async function loadCustomers() {
     customersBody.innerHTML = `
-<tr>
-    <td colspan="5" class="loading-cell">
-        <div class="spinner"></div>
-        <span>Loading customers...</span>
-    </td>
-</tr>
-`;
+        <tr>
+            <td colspan="5" class="loading-cell">
+                <div class="spinner"></div>
+                <span>Loading customers...</span>
+            </td>
+        </tr>
+    `;
 
     try {
+        // First, attempt to load customers from the server.
+        const response = await fetch(
+            `${API_BASE_URL}/customers`
+        );
 
-        const response =
-            await fetch(`${API_BASE_URL}/customers`);
+        if (!response.ok) {
+            throw new Error("Unable to load customers from server.");
+        }
 
-        customers = await response.json();
+        const data = await response.json();
+
+        customers = Array.isArray(data)
+            ? data
+            : Array.isArray(data.customers)
+                ? data.customers
+                : [];
+
+        // Cache the latest server customers locally.
+        if (window.posDatabase) {
+            await window.posDatabase.saveCustomers(customers);
+        }
 
         renderCustomers(customers);
+    } catch (error) {
+        console.warn(
+            "Server unavailable. Loading cached customers.",
+            error
+        );
 
+        try {
+            // Fall back to the local SQLite database.
+            if (!window.posDatabase) {
+                throw new Error(
+                    "Local customer database is unavailable."
+                );
+            }
+
+            customers = await window.posDatabase.getCustomers();
+
+            renderCustomers(customers);
+
+            if (customers.length === 0) {
+                customersBody.insertAdjacentHTML(
+                    "afterbegin",
+                    ""
+                );
+            }
+        } catch (localError) {
+            console.error(
+                "Could not load local customers:",
+                localError
+            );
+
+            customers = [];
+
+            customersBody.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        Could not load customers.
+                        Please check the database.
+                    </td>
+                </tr>
+            `;
+        }
     }
-
-    catch (error) {
-
-        console.error(error);
-
-    }
-
 }
+
 
 // ==========================================
 // RENDER TABLE
@@ -335,6 +385,10 @@ async function loadCustomerHistory(customerId) {
             await fetch(
                 `${API_BASE_URL}/customers/${customerId}/history`
             );
+        
+        if (!response.ok) {
+    throw new Error("Could not load customer history from server.");
+}
 
         const data =
             await response.json();
@@ -485,14 +539,76 @@ async function loadCustomerHistory(customerId) {
 
     }
 
+   
     catch (error) {
+        console.warn(
+            "Could not load online customer history.",
+            error
+        );
 
-        console.error(error);
+        try {
+            const localCustomers =
+                await window.posDatabase.getCustomers();
 
-        alert(error.message);
+            const customer = localCustomers.find(
+                item =>
+                    Number(item.customer_id) ===
+                    Number(customerId)
+            );
 
+            if (!customer) {
+                throw new Error(
+                    "This customer is not available in the local database."
+                );
+            }
+
+            currentCustomerId = customer.customer_id;
+
+            // Build a compatible structure for the existing
+            // customer details and print statement features.
+            currentCustomerData = {
+                customer,
+                statistics: {
+                    totalPurchases: 0,
+                    totalSpent: 0,
+                    lastPurchase: null
+                },
+                sales: []
+            };
+
+            detailName.textContent = customer.name;
+            detailNameText.textContent = customer.name;
+            detailPhone.textContent =
+                customer.phone_number || "-";
+            detailEmail.textContent =
+                customer.email || "-";
+            detailType.textContent =
+                customer.customer_type || "Cash";
+
+            totalPurchases.textContent = "0";
+            totalSpent.textContent = "R 0.00";
+            lastPurchase.textContent = "-";
+
+            purchaseHistory.innerHTML = `
+                <p>
+                    Purchase history is unavailable offline.
+                    Reconnect to view this customer's sales.
+                </p>
+            `;
+
+            customerDetails.classList.add("show");
+        } catch (localError) {
+            console.error(
+                "Could not load customer details:",
+                localError
+            );
+
+            alert(
+                "Could not load customer details. " +
+                "Please check your connection and local database."
+            );
+        }
     }
-
 }
 
 // ==========================================
@@ -586,7 +702,7 @@ const closeCustomersBtn = document.getElementById("closeCustomersBtn");
 
 if (closeCustomersBtn) {
     closeCustomersBtn.addEventListener("click", () => {
-        window.location.href = "products.html";
+        window.location.href = "index.html";
     });
 }
 

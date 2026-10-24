@@ -342,7 +342,7 @@ const closeBtn = document.getElementById("closeReportsBtn");
 
 if (closeBtn) {
     closeBtn.addEventListener("click", () => {
-        window.location.href = "products.html";
+        window.location.href = "index.html";
     });
 }
 

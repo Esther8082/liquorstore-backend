@@ -150,7 +150,7 @@ liquor-store-pos/
 │   ├── checkout.html
 │   ├── customers.html 
 │   ├── inventory.html
-│   ├── products.html
+│   ├── index.html
 │   ├── reports.html
 │   ├── settings.html
 │   └── stockmanagement.html
