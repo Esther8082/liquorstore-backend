@@ -25,7 +25,19 @@ const closeAddProductBtn = document.getElementById("closeAddProductBtn");
 let selectedCategoryId = null;
 
 // =========================================================
-// READ FORM VALUES USING THE ACTUAL HTML IDS
+// CHECK SQLITE AVAILABILITY
+// =========================================================
+
+function hasLocalDatabase(methodName) {
+    return (
+        typeof window !== "undefined" &&
+        window.posDatabase &&
+        typeof window.posDatabase[methodName] === "function"
+    );
+}
+
+// =========================================================
+// READ FORM VALUES
 // =========================================================
 
 function getFormValue(fieldId) {
@@ -62,33 +74,60 @@ function resetProductForm() {
 
 // =========================================================
 // LOAD CATEGORIES
-// ONLINE FIRST, THEN SQLITE
+// ONLINE FIRST, SQLITE FALLBACK
 // =========================================================
 
 async function loadCategories() {
     try {
         let categories = [];
 
+        // Try the online API first.
         try {
             const response = await fetch(`${API_BASE_URL}/categories`);
 
             if (!response.ok) {
-                throw new Error("Failed to load online categories.");
+                throw new Error(
+                    `Categories API returned status ${response.status}`
+                );
             }
 
-            categories = await response.json();
+            const data = await response.json();
 
-            await window.posDatabase.saveCategories(categories);
+            if (!Array.isArray(data)) {
+                throw new Error("Invalid categories API response.");
+            }
 
-        } catch (error) {
+            categories = data;
+
+            // Cache online categories only if SQLite is available.
+            if (hasLocalDatabase("saveCategories")) {
+                try {
+                    await window.posDatabase.saveCategories(categories);
+                } catch (cacheError) {
+                    console.warn(
+                        "Categories loaded online but could not be cached:",
+                        cacheError.message
+                    );
+                }
+            }
+        } catch (onlineError) {
             console.warn(
-                "Loading categories from SQLite:",
-                error.message
+                "Unable to load online categories:",
+                onlineError.message
             );
 
-            categories = await window.posDatabase.getCategories();
+            // Fall back to SQLite in Electron.
+            if (hasLocalDatabase("getCategories")) {
+                categories = await window.posDatabase.getCategories();
+            } else {
+                throw new Error(
+                    "Unable to load categories online. " +
+                    "Please check your internet connection."
+                );
+            }
         }
 
+        // Display categories.
         categoryGrid.innerHTML = "";
 
         categories.forEach(category => {
@@ -121,16 +160,13 @@ async function loadCategories() {
         });
 
         if (categories.length === 0) {
-            categoryGrid.textContent =
-                "No saved categories. Connect to the internet to load categories.";
+            categoryGrid.textContent = "No categories found.";
         }
-
     } catch (error) {
         console.error("LOAD CATEGORIES ERROR:", error);
 
-        alert(
-            "Could not load categories from the online or local database."
-        );
+        categoryGrid.textContent =
+            "Could not load categories. Please check your internet connection.";
     }
 }
 
@@ -139,7 +175,6 @@ loadCategories();
 
 // =========================================================
 // READ PRODUCT IMAGE
-// CONVERT IMAGE TO DATA URL FOR OFFLINE STORAGE
 // =========================================================
 
 function readImageAsDataUrl(file) {
@@ -164,14 +199,10 @@ function readImageAsDataUrl(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
-        reader.onload = () => {
-            resolve(reader.result);
-        };
+        reader.onload = () => resolve(reader.result);
 
         reader.onerror = () => {
-            reject(
-                new Error("The selected image could not be read.")
-            );
+            reject(new Error("The selected image could not be read."));
         };
 
         reader.readAsDataURL(file);
@@ -200,20 +231,13 @@ addProductForm.addEventListener("submit", async event => {
     }
 
     try {
-        // -------------------------------------------------
-        // READ IMAGE
-        // -------------------------------------------------
-
+        // Read image.
         const imageInput = document.getElementById("product-image");
         const imageFile = imageInput?.files?.[0] || null;
 
         const imageDataUrl = await readImageAsDataUrl(imageFile);
 
-        // -------------------------------------------------
-        // READ PRODUCT DETAILS
-        // FIX: USE THE ACTUAL IDS FROM YOUR HTML
-        // -------------------------------------------------
-
+        // Read product details.
         const product = {
             item_name: getFormValue("item-name"),
             item_size: getFormValue("item-size"),
@@ -226,10 +250,7 @@ addProductForm.addEventListener("submit", async event => {
             price: Number(getFormValue("price"))
         };
 
-        // -------------------------------------------------
-        // VALIDATE PRODUCT DETAILS
-        // -------------------------------------------------
-
+        // Validate product details.
         if (!product.item_name) {
             throw new Error("Please enter a product name.");
         }
@@ -238,10 +259,7 @@ addProductForm.addEventListener("submit", async event => {
             throw new Error("Please enter the product size.");
         }
 
-        if (
-            !Number.isFinite(product.price) ||
-            product.price < 0
-        ) {
+        if (!Number.isFinite(product.price) || product.price < 0) {
             throw new Error("Please enter a valid selling price.");
         }
 
@@ -254,19 +272,13 @@ addProductForm.addEventListener("submit", async event => {
             );
         }
 
-        // -------------------------------------------------
-        // TRY TO SAVE PRODUCT ONLINE FIRST
-        // -------------------------------------------------
-
+        // Prepare request.
         const formData = new FormData();
 
         formData.append("item_name", product.item_name);
         formData.append("item_size", product.item_size);
         formData.append("barcode", product.barcode);
-        formData.append(
-            "category_id",
-            String(product.category_id)
-        );
+        formData.append("category_id", String(product.category_id));
         formData.append(
             "quantity_in_stock",
             String(product.quantity_in_stock)
@@ -277,6 +289,7 @@ addProductForm.addEventListener("submit", async event => {
             formData.append("image", imageFile);
         }
 
+        // Attempt to save online.
         let response;
 
         try {
@@ -284,16 +297,20 @@ addProductForm.addEventListener("submit", async event => {
                 method: "POST",
                 body: formData
             });
-
         } catch (networkError) {
-            // ---------------------------------------------
-            // NETWORK FAILURE: SAVE PRODUCT LOCALLY
-            // ---------------------------------------------
-
             console.warn(
-                "Online product creation failed. Saving locally:",
+                "Online product creation failed:",
                 networkError.message
             );
+
+            // Offline saving is supported only when Electron exposes SQLite.
+            if (!hasLocalDatabase("createLocalProduct")) {
+                throw new Error(
+                    "Could not connect to the online server. " +
+                    "Offline product storage is only available in the " +
+                    "Electron desktop app."
+                );
+            }
 
             const localProduct =
                 await window.posDatabase.createLocalProduct({
@@ -303,7 +320,6 @@ addProductForm.addEventListener("submit", async event => {
 
             alert(
                 `Product saved offline: ${localProduct.item_name}\n\n` +
-                "The product details and image have been saved locally. " +
                 "The product will need to synchronise when the internet " +
                 "is available."
             );
@@ -312,24 +328,17 @@ addProductForm.addEventListener("submit", async event => {
             return;
         }
 
-        // -------------------------------------------------
-        // HANDLE SERVER ERRORS
-        // -------------------------------------------------
-
+        // Handle HTTP/server errors.
         if (!response.ok) {
             const errorText = await response.text().catch(() => "");
 
             throw new Error(
                 `The server could not create the product ` +
-                `(${response.status}). ` +
-                errorText.slice(0, 250)
+                `(${response.status}). ${errorText.slice(0, 250)}`
             );
         }
 
-        // -------------------------------------------------
-        // PROCESS SUCCESSFUL SERVER RESPONSE
-        // -------------------------------------------------
-
+        // Read the created product.
         const result = await response.json();
 
         const serverProduct =
@@ -337,22 +346,28 @@ addProductForm.addEventListener("submit", async event => {
             result.data?.product ||
             result;
 
-        // Cache the server product locally when an ID exists.
-        if (serverProduct.product_id != null) {
-            await window.posDatabase.saveProducts([serverProduct]);
+        // Cache product only if SQLite is available.
+        if (
+            serverProduct.product_id != null &&
+            hasLocalDatabase("saveProducts")
+        ) {
+            try {
+                await window.posDatabase.saveProducts([serverProduct]);
+            } catch (cacheError) {
+                console.warn(
+                    "Product was created online but could not be cached:",
+                    cacheError.message
+                );
+            }
         }
 
         alert("Product added successfully.");
 
         resetProductForm();
-
     } catch (error) {
         console.error("ADD PRODUCT ERROR:", error);
 
-        alert(
-            error.message || "Could not save the product."
-        );
-
+        alert(error.message || "Could not save the product.");
     } finally {
         if (submitButton) {
             submitButton.disabled = false;
@@ -413,9 +428,10 @@ saveCategoryBtn.addEventListener("click", async () => {
 
         categoryModal.classList.remove("show");
 
-        // Reload categories and select the newly created category.
+        // Refresh the category cards.
         await loadCategories();
 
+        // Select the newly created category.
         document.querySelectorAll(".category-card").forEach(card => {
             if (
                 Number(card.dataset.id) ===
@@ -424,7 +440,6 @@ saveCategoryBtn.addEventListener("click", async () => {
                 card.click();
             }
         });
-
     } catch (error) {
         console.error("SAVE CATEGORY ERROR:", error);
 
@@ -433,7 +448,6 @@ saveCategoryBtn.addEventListener("click", async () => {
             "require an internet connection. " +
             error.message
         );
-
     } finally {
         saveCategoryBtn.disabled = false;
     }
